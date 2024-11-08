@@ -9,9 +9,13 @@ namespace WebApiClient
 {
     public interface IRestClient
     {
-        IEnumerable<Product> GetTenLatestProducts();
-        Product GetProductFromPartOfName(string partOfName);
-        int AddProduct(Product product);
+        Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription);
+
+        Task<IEnumerable<ProductDto>> GetTenLatestProducts();
+        Task<int> CreateProductAsync(ProductDto entity);
+        Task<bool> UpdateProductAsync(ProductDto entity);
+        Task<bool> DeleteProductAsync(int id);
+        //Task<bool> UpdateProductAsync(ProductDto product);
 
     }
 }

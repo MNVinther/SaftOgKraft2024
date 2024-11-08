@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApiClient.DTOs
 {
-    public class Product
+    public class ProductDto
     {
         public int Id { get; set; }
         [Required]
@@ -16,6 +16,7 @@ namespace WebApiClient.DTOs
         public decimal Price { get; set; }
         [Required]
         public string Description { get; set; }
+        //static int Stock { get; set; }
 
     }
 }
