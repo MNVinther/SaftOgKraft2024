@@ -39,10 +39,9 @@ namespace WebApiClient
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProductDto>> GetTenLatestProducts()
+        public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
-            throw new NotImplementedException();
-            //return _products.OrderByDescending(p => p.Id).Take(Count);
+            return await Task.Run(() => _products.Take(10));
         }
 
 
