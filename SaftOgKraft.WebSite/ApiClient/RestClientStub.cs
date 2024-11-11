@@ -39,11 +39,10 @@ namespace WebApiClient
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
+        public Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
-            return await Task.Run(() => _products.Take(10));
+            return Task.FromResult(_products.Take(10));
         }
-
 
         public Task<bool> UpdateProductAsync(ProductDto entity)
         {
