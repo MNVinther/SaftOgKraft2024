@@ -55,7 +55,7 @@ namespace WebApiClient
         {
 
             //TRÆK FRA API
-           var request = new RestRequest($"products", Method.Get);
+            var request = new RestRequest($"products", Method.Get);
             request.AddParameter("filter", "GetTenLatest");
             var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
             if (!response.IsSuccessful)

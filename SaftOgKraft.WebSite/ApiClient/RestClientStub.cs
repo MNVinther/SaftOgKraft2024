@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.SS.Formula.Functions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,8 +42,9 @@ namespace WebApiClient
         public Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
             throw new NotImplementedException();
-            //return _products.OrderByDescending(p => p.Id).Take(count);
+            //return _products.OrderByDescending(p => p.Id).Take(Count);
         }
+
 
         public Task<bool> UpdateProductAsync(ProductDto entity)
         {
