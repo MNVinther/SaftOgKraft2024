@@ -7,6 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaftOgKraft.WebSite", "Saft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.App", "Employee.App\Employee.App.csproj", "{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3A081A15-8CCE-46E2-9389-79692B2AC60E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
