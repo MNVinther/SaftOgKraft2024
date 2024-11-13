@@ -1,19 +1,18 @@
-﻿@* @model IEnumerable<SaftOgKraft.Website.ApiClient.DTO.Product> *@
+﻿@model IEnumerable<SaftOgKraft.WebSite.ApiClient.DTO.ProductDto>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <section id="section-hero">
-    @* evil plan make container with and image (not as background) and make a paragraph which we style on top *@
+    
     <div class="hero-image">
         <img src="~/lib/images/Saftogkraft.png" alt="This is a hero banner"/>
         <div class="text-center">
             <section id="section-products">
                 <h2>Most popular products</h2>
                 <br />
-                @* method for showing ten latest products from the database. It shows the products name, description and price.
-                With a button (add to cart) missing functionality *@
+                
                 @foreach (var item in Model)
                 {
                     <figure>

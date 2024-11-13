@@ -1,4 +1,6 @@
-﻿    using Microsoft.AspNetCore.Mvc;
+﻿using DAL.DAO;
+using DAL.Model;    
+using Microsoft.AspNetCore.Mvc;
 
 namespace SaftOgKraft.WebApi.Controllers
 {

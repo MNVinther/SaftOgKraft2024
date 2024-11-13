@@ -1,4 +1,6 @@
-﻿namespace SaftOgKraft.WebApi.DALStub
+﻿using DAL.Model;
+
+namespace SaftOgKraft.WebApi.DALStub
 {
     public class ProductDAOStub
     {
@@ -6,16 +8,16 @@
 
         private static List<Product> _products = new List<Product>()
         {
-            new ProductDto() { Id = 1, Name = "KraftigSaft", Price = 10, Description = "Den lækreste saft" },
-            new ProductDto() { Id = 2, Name = "SødeSaft", Price = 8, Description = "Sød og frugtrig saft" },
-            new ProductDto() { Id = 3, Name = "CitrusSaft", Price = 12, Description = "Frisk citrussmag" },
-            new ProductDto() { Id = 4, Name = "BærrySaft", Price = 11, Description = "Fuld af bærsmag" },
-            new ProductDto() { Id = 5, Name = "GrønSaft", Price = 9, Description = "Grøn smoothie" },
-            new ProductDto() { Id = 6, Name = "6Saft", Price = 8, Description = "Sød og frugtrig saft" },
-            new ProductDto() { Id = 7, Name = "7Saft", Price = 12, Description = "Frisk citrussmag" },
-            new ProductDto() { Id = 8, Name = "8Saft", Price = 11, Description = "Fuld af bærsmag" },
-            new ProductDto() { Id = 9, Name = "9Saft", Price = 9, Description = "Grøn smoothie" },
-            new ProductDto() { Id = 10, Name = "10Saft", Price = 9, Description = "Grøn smoothie" },
+            new Product() { Id = 1, Name = "KraftigSaft", Price = 10, Description = "Den lækreste saft" },
+            new Product() { Id = 2, Name = "SødeSaft", Price = 8, Description = "Sød og frugtrig saft" },
+            new Product() { Id = 3, Name = "CitrusSaft", Price = 12, Description = "Frisk citrussmag" },
+            new Product() { Id = 4, Name = "BærrySaft", Price = 11, Description = "Fuld af bærsmag" },
+            new Product() { Id = 5, Name = "GrønSaft", Price = 9, Description = "Grøn smoothie" },
+            new Product() { Id = 6, Name = "6Saft", Price = 8, Description = "Sød og frugtrig saft" },
+            new Product() { Id = 7, Name = "7Saft", Price = 12, Description = "Frisk citrussmag" },
+            new Product() { Id = 8, Name = "8Saft", Price = 11, Description = "Fuld af bærsmag" },
+            new Product() { Id = 9, Name = "9Saft", Price = 9, Description = "Grøn smoothie" },
+            new Product() { Id = 10, Name = "10Saft", Price = 9, Description = "Grøn smoothie" },
         };
 
         #endregion
