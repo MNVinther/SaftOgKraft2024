@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaftOgKraft.WebSite", "Saft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingSaftOgKraft", "TestingSaftOgKraft\TestingSaftOgKraft.csproj", "{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaftOgKraft.WebApi", "SaftOgKraft.WebApi\SaftOgKraft.WebApi.csproj", "{A8807097-3F0E-4158-8386-570A0D866E22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{79F6AF96-6E00-43C2-BC92-7E894F786E53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8807097-3F0E-4158-8386-570A0D866E22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8807097-3F0E-4158-8386-570A0D866E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8807097-3F0E-4158-8386-570A0D866E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8807097-3F0E-4158-8386-570A0D866E22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

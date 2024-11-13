@@ -1,8 +1,36 @@
-﻿@{
+﻿@* @model IEnumerable<SaftOgKraft.Website.ApiClient.DTO.Product> *@
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section id="section-hero">
+    @* evil plan make container with and image (not as background) and make a paragraph which we style on top *@
+    <div class="hero-image">
+        <img src="~/lib/images/Saftogkraft.png" alt="This is a hero banner"/>
+        <div class="text-center">
+            <section id="section-products">
+                <h2>Most popular products</h2>
+                <br />
+                @* method for showing ten latest products from the database. It shows the products name, description and price.
+                With a button (add to cart) missing functionality *@
+                @foreach (var item in Model)
+                {
+                    <figure>
+                    @item.Name
+                    <br />
+                    @item.Description
+                    <br />
+                    @item.Price
+                    <br />
+                    <button>HEJ</button>
+                    </figure>
+                }
+               
+
+               
+            </section>
+        </div>
+    </div>
+</section>
+
