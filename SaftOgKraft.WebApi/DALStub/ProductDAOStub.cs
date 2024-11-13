@@ -32,11 +32,13 @@
 
         public Product Get(int id)
         {
+            // Searches the product list for the first product with the matching ID
             return _products.FirstOrDefault(product => product.Id == id);
         }
 
         public int Insert(Product product)
         {
+            // Finds the maximum product ID in the list and increments it for the new product
             var newId = _products.Max(product => product.Id) + 1;
             product.Id = newId;
             //product.CreationDate = DateTime.Now;
@@ -45,10 +47,12 @@
 
         }
 
-        public IEnumerable<Product> GetTenLatestProducts()
-        {
-            return _products.OrderByDescending(product => product.CreationDate).Take(10);
-        }
+        //// Another method to retrieve the ten latest products, sorted by creation date
+        //public IEnumerable<Product> GetTenLatestProducts()
+        //{
+        //    // Sorts the products by creation date in descending order (newest first) and takes the first 10
+        //    return _products.OrderByDescending(product => product.CreationDate).Take(10);
+        //}
 
     }
 }
