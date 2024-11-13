@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaftOgKraft.WebSite", "SaftOgKraft.WebSite\SaftOgKraft.WebSite.csproj", "{8EADF2BE-C02D-4B90-8D85-2ED3EA0C6644}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{79F6AF96-6E00-43C2-BC92-7E894F786E53}"
 EndProject
 Global
