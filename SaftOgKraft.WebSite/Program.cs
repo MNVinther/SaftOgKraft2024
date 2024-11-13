@@ -1,3 +1,5 @@
+using WebApiClient;
+
 namespace SaftOgKraft.WebSite
 {
     public class Program
@@ -8,6 +10,7 @@ namespace SaftOgKraft.WebSite
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IRestClient, RestClientStub>();
 
             var app = builder.Build();
 

@@ -39,9 +39,13 @@ namespace WebApiClient
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
+        public Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
-            return await Task.Run(() => _products.Take(10));
+            // Get the first 10 products from the _products collection
+            var products = _products.Take(10);
+
+            // Return the selected products as a completed task (to match the asynchronous method signature)
+            return Task.FromResult(products);
         }
 
 
