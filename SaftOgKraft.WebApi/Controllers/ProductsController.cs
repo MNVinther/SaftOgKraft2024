@@ -13,21 +13,22 @@ namespace SaftOgKraft.WebApi.Controllers
 
         public ProductsController(IProductDAO productsDAO) => _productsDAO = productsDAO;
 
+        // GET: api/ProductsController>
+        [HttpGet("latest10")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetTenlatestProducts() => Ok(await _productsDAO.GetTenLatestProducts());
+
         // GET: api/ProductsController
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get() => Ok(_productsDAO.GetAll());
 
-        // GET: api/ProductsController>
-        [HttpGet("latest10")]
-        public ActionResult<IEnumerable<Product>> GetTenlatestProducts() => Ok(_productsDAO.GetTenLatestProducts());
-
+        
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
-        public ActionResult<Product> Get(int id) => _productsDAO.Get(id);
+        public async Task<ActionResult<Product>> Get(int id) => await _productsDAO.Get(id);
 
         // POST api/<ProductsController>
         [HttpPost]
-        public int Post([FromBody] Product product) => _productsDAO.Insert(product);
+        public Task<int> Post([FromBody] Product product) => _productsDAO.Insert(product);
 
 
     }

@@ -9,7 +9,7 @@ namespace SaftOgKraft.WebSite.ApiClient
         private readonly RestClient _restClient;
 
         //constructor der modtager basis URL'en til APi'et
-        //https://localhost:7243/api/v1/
+        //https://localhost:7106/api/v1/
 
         public RestApiClient(string baseApiUrl)
         {

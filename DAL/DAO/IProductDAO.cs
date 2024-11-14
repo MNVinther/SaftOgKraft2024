@@ -9,9 +9,9 @@ namespace DAL.DAO
 {
     public interface IProductDAO
     {
-        IEnumerable<Product> GetAll();
-        Product Get(int id);
-        int Insert(Product product);
-        IEnumerable<Product> GetTenLatestProducts();
+        Task<IEnumerable<Product>> GetAll();
+        Task<Product> Get(int id);
+        Task<int> Insert(Product product);
+        Task<IEnumerable<Product>> GetTenLatestProducts();
     }
 }

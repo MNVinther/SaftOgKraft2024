@@ -15,7 +15,7 @@ namespace SaftOgKraft.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            const string connectionString = "Data Source=.;Initial Catalog=BlogSharp;Integrated Security=True";
+            const string connectionString = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S231_10503093;User ID=DMA-CSD-S231_10503093;Password=Password1!;Integrated Security=False";
             builder.Services.AddSingleton<IProductDAO>((_) => new ProductDAO(connectionString));
             //builder.Services.AddSingleton<INogetAndetDAO>((_) => new NogetAndetDAO(connectionString));
 

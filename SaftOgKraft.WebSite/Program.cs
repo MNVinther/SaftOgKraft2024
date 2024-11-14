@@ -11,7 +11,8 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
-        builder.Services.AddSingleton<IRestClient, RestClientStub>();
+        //builder.Services.AddSingleton<IRestClient, RestClientStub>();
+        builder.Services.AddSingleton<IRestClient>((_) => new RestApiClient("https://localhost:7106/api/v1"));
 
         var app = builder.Build();
 
