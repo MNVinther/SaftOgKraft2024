@@ -36,6 +36,7 @@
             panel2 = new Panel();
             panel3 = new Panel();
             dgvRecentOrders = new DataGridView();
+            btnInspectOrder = new Button();
             flowStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRecentOrders).BeginInit();
             SuspendLayout();
@@ -101,10 +102,20 @@
             dgvRecentOrders.Size = new Size(702, 105);
             dgvRecentOrders.TabIndex = 2;
             // 
+            // btnInspectOrder
+            // 
+            btnInspectOrder.Location = new Point(10, 241);
+            btnInspectOrder.Name = "btnInspectOrder";
+            btnInspectOrder.Size = new Size(75, 23);
+            btnInspectOrder.TabIndex = 3;
+            btnInspectOrder.Text = "Inspect";
+            btnInspectOrder.UseVisualStyleBackColor = true;
+            // 
             // DashboardControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnInspectOrder);
             Controls.Add(dgvRecentOrders);
             Controls.Add(flowStats);
             Controls.Add(lblTitle);
@@ -126,5 +137,6 @@
         private Panel panel2;
         private Panel panel3;
         private DataGridView dgvRecentOrders;
+        private Button btnInspectOrder;
     }
 }
