@@ -1,21 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SaftOgKraft.WebSite.Models;
+using System.Diagnostics;
+using SaftOgKraft.WebSite.ApiClient;
 
 namespace SaftOgKraft.WebSite.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    private readonly ILogger<HomeController> _logger;
+    private readonly IRestClient _restClient;
+
+    public HomeController(ILogger<HomeController> logger, IRestClient restClient)
     {
         _logger = logger;
+        _restClient = restClient;   
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var latestProducts = await _restClient.GetTenLatestProducts();
+        return View(latestProducts);
     }
 
     public IActionResult Privacy()
