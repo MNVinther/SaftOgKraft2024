@@ -10,10 +10,11 @@ namespace SaftOgKraft.WebSite.ApiClient
     public interface IRestClient
     {
         Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription);
+        Task<IEnumerable<ProductDto>> GetAllProductsAsync();
 
         Task<IEnumerable<ProductDto>> GetTenLatestProducts();
-        Task<int> CreateProductAsync(ProductDto entity);
-        Task<bool> UpdateProductAsync(ProductDto entity);
+        Task<int> CreateProductAsync(ProductDto product);
+        Task<bool> UpdateProductAsync(ProductDto product);
         Task<bool> DeleteProductAsync(int id);
         //Task<bool> UpdateProductAsync(ProductDto product);
 
