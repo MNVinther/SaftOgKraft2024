@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApiClient.DTOs
+namespace SaftOgKraft.WebSite.ApiClient.DTO
 {
     public class ProductDto
     {

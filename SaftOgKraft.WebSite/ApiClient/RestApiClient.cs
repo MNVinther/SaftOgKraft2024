@@ -1,7 +1,7 @@
 ﻿using RestSharp;
-using WebApiClient.DTOs;
+using SaftOgKraft.WebSite.ApiClient.DTO;
 
-namespace WebApiClient
+namespace SaftOgKraft.WebSite.ApiClient
 {
     public class RestApiClient : IRestClient
     {
