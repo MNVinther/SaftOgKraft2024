@@ -2,6 +2,7 @@
 using DAL.Model;    
 using Microsoft.AspNetCore.Mvc;
 using SaftOgKraft.WebApi.Controllers.DTOs;
+using SaftOgKraft.WebApi.Controllers.DTOs.Converters;
 
 namespace SaftOgKraft.WebApi.Controllers
 {
@@ -15,8 +16,17 @@ namespace SaftOgKraft.WebApi.Controllers
         public ProductsController(IProductDAO productsDAO) => _productsDAO = productsDAO;
 
         // GET: api/ProductsController>
-        [HttpGet("latest10")]
-        public async Task<ActionResult<IEnumerable<productDTO>>> GetTenlatestProducts() => Ok(await _productsDAO.GetTenLatestProductsAsync());
+        [HttpGet("ten-latest")]
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetTenlatestProducts()
+        {
+            IEnumerable<Product> products;
+
+            products = await _productsDAO.GetTenLatestProductsAsync();
+
+            return Ok(products.ToDtos());
+
+        }
+            
 
         // GET: api/ProductsController
         [HttpGet]

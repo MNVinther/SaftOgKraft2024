@@ -52,10 +52,10 @@ namespace SaftOgKraft.WebSite.ApiClient
         public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
             // Create a request for the "products" endpoint with a GET method
-            var request = new RestRequest($"latest10", Method.Get);
+            var request = new RestRequest($"products/ten-latest", Method.Get);
 
             // Add a query parameter "filter" with the value "GetTenLatest"
-            request.AddParameter("filter", "latest10");
+            //request.AddParameter("filter", "latest10");
 
             // Execute the request asynchronously and deserialize the response to a list of ProductDto objects
             var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
