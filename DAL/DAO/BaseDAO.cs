@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+//using System.Data.SqlClient; Udkommenteret da denne var blevet Obsolete, og anbefaling er at man bruger Microsoft.Data.SqlClient.
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,13 +15,11 @@ namespace DAL.DAO
         private readonly string _connectionString;
 
         // Constructor to initialize the connection string
-        public BaseDAO(string connectionString) => _connectionString = connectionString;
+        protected BaseDAO(string connectionString) => _connectionString = connectionString;
 
         // Method to create a new SQL connection
-        protected IDbConnection CreateConnection()
-        {
-            // Return a new SqlConnection object using the provided connection string
-            return new SqlConnection(_connectionString);
-        }
+        // Return a new SqlConnection object using the provided connection string
+        protected IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+
     }
 }

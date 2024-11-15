@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using DAL.Model;
 
 namespace DAL.DAO;
-
-public interface IProductDAO
+internal interface ITestInterface
 {
     Task<IEnumerable<Product>> GetAllAsync();
     Task<Product> GetAsync(int id);
