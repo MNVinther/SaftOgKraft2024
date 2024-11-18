@@ -16,14 +16,48 @@ namespace SaftOgKraft.WebSite.ApiClient
             _restClient = new RestClient(baseApiUrl);
         }
 
-        public Task<int> CreateProductAsync(ProductDto entity)
+        public RestApiClient(RestClient mockClient)
         {
-            throw new NotImplementedException();
+            _restClient = mockClient;
         }
 
-        public Task<bool> DeleteProductAsync(int id)
+        public async Task<int> CreateProductAsync(ProductDto product)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest("products", Method.Post)
+                          .AddJsonBody(product);
+
+            var response = await _restClient.ExecuteAsync<int>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error creating product. Status: {response.StatusCode}, Message: {response.Content}");
+            }
+
+            return response.Data;
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            var request = new RestRequest($"products/{id}", Method.Delete);
+            var response = await _restClient.ExecuteAsync<bool>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error deleting product. Status: {response.StatusCode}, Message: {response.Content}");
+            }
+            return response.Data;
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        {
+            var request = new RestRequest("products");
+            request.Method = Method.Get;
+
+            var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
+
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error retrieving all products. Message was {response.Content}");
+            }
+            return response.Data ?? Enumerable.Empty<ProductDto>();
         }
 
         public async Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription)
@@ -73,9 +107,17 @@ namespace SaftOgKraft.WebSite.ApiClient
         //}
 
 
-        public Task<bool> UpdateProductAsync(ProductDto entity)
+        // public Task<bool> UpdateProductAsync(ProductDto entity)
+        public async Task<bool> UpdateProductAsync(ProductDto product)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest($"products/{product.Id}", Method.Put)
+                          .AddJsonBody(product);
+            var response = await _restClient.ExecuteAsync<bool>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error updating product. Status: {response.StatusCode}, Message: {response.Content}");
+            }
+            return response.Data;
         }
     }
 }

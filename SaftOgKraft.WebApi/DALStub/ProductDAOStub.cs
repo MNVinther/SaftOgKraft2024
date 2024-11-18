@@ -46,7 +46,6 @@ namespace SaftOgKraft.WebApi.DALStub
             //product.CreationDate = DateTime.Now;
             _products.Add(product);
             return newId;
-
         }
 
         //// Another method to retrieve the ten latest products, sorted by creation date
