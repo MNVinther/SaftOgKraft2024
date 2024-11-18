@@ -18,6 +18,7 @@ public class HomeController : Controller
         _restClient = restClient;   
     }
 
+    // GET: ProductsController
     public async Task<IActionResult> Index()
     {
         var latestProducts = await _restClient.GetTenLatestProducts();

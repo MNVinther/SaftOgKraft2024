@@ -15,11 +15,10 @@ namespace DAL.DAO
         private readonly string _connectionString;
 
         // Constructor to initialize the connection string
-        public BaseDAO(string connectionString) => _connectionString = connectionString;
+        protected BaseDAO(string connectionString) => _connectionString = connectionString;
 
         // Method to create a new SQL connection
         // Return a new SqlConnection object using the provided connection string
         protected IDbConnection CreateConnection() => new SqlConnection(_connectionString);
-        
     }
 }

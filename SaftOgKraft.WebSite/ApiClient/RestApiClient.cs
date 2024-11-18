@@ -9,7 +9,7 @@ namespace SaftOgKraft.WebSite.ApiClient
         private readonly RestClient _restClient;
 
         //constructor der modtager basis URL'en til APi'et
-        //https://localhost:7243/api/v1/
+        //https://localhost:7106/api/v1/
 
         public RestApiClient(string baseApiUrl)
         {
@@ -86,10 +86,10 @@ namespace SaftOgKraft.WebSite.ApiClient
         public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
             // Create a request for the "products" endpoint with a GET method
-            var request = new RestRequest($"products", Method.Get);
+            var request = new RestRequest($"products/ten-latest", Method.Get);
 
             // Add a query parameter "filter" with the value "GetTenLatest"
-            request.AddParameter("filter", "GetTenLatest");
+            //request.AddParameter("filter", "latest10");
 
             // Execute the request asynchronously and deserialize the response to a list of ProductDto objects
             var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
@@ -98,9 +98,16 @@ namespace SaftOgKraft.WebSite.ApiClient
                 throw new Exception($"Error retrieving latest products. Message was {response.Content}");
             }
             // Return the data from the response, or an empty list if the data is null
-            return response.Data ?? [];
+            return response.Data;
         }
 
+        //public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
+        //{
+        //    return await _restClient.Get<IEnumerable<ProductDto>>(new RestRequest("blogposts/latest10"));
+        //}
+
+
+        // public Task<bool> UpdateProductAsync(ProductDto entity)
         public async Task<bool> UpdateProductAsync(ProductDto product)
         {
             var request = new RestRequest($"products/{product.Id}", Method.Put)

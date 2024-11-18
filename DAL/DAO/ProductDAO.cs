@@ -5,36 +5,58 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using DAL.Model;
+using System.Collections;
 
-namespace DAL.DAO
+namespace DAL.DAO;
+
+public class ProductDAO : BaseDAO, IProductDAO
 {
-    public class ProductDAO : BaseDAO, IProductDAO
+    // #TODO Not sure about this one - lokal variabel i den metode hvor den skal bruges.
+    
+    public ProductDAO(string connectionString) : base(connectionString)
     {
-        // #TODO Not sure about this one
-        private const string SELECT_TEN_QUERY = "SELECT TOP(10) Id, Name, Description, Price BY Id DESC";
-        public ProductDAO(string connectionString) : base(connectionString)
-        {
-        }
+    }
 
-        public Product Get(int id)
+    public async Task<IEnumerable<Product>> GetTenLatestProductsAsync()
+    {
+        try
         {
-            throw new NotImplementedException();
-        }
+            // Define the query
+            var query = "SELECT TOP(10) ProductId as Id, ProductName as Name, Description, Price FROM Product ORDER BY ProductId DESC";
 
-        public IEnumerable<Product> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Product> GetTenLatestProducts()
-        {
+            // Create and use a new connection
             using var connection = CreateConnection();
-            return connection.Query<Product>(SELECT_TEN_QUERY).ToList();
-        }
 
-        public int Insert(Product product)
-        {
-            throw new NotImplementedException();
+            // Execute the query and retrieve the products
+            return await connection.QueryAsync<Product>(query);
         }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error getting latest blog posts: '{ex.Message}'.", ex);
+}
+}
+    
+    public Task<Product> GetAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        try
+        {
+            var query = "SELECT * FROM Product";
+            using var connection = CreateConnection();
+            return (await connection.QueryAsync<Product>(query)).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error getting all blog posts: '{ex.Message}'.", ex);
+        }
+    }
+
+    public Task<int> InsertAsync(Product product)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using DAL.DAO;
 using DAL.Model;    
 using Microsoft.AspNetCore.Mvc;
+using SaftOgKraft.WebApi.Controllers.DTOs;
+using SaftOgKraft.WebApi.Controllers.DTOs.Converters;
 
 namespace SaftOgKraft.WebApi.Controllers
 {
@@ -9,25 +11,35 @@ namespace SaftOgKraft.WebApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IProductDAO _productsDAO;
+        private readonly IProductDAO _productsDAO;
 
         public ProductsController(IProductDAO productsDAO) => _productsDAO = productsDAO;
 
+        // GET: api/ProductsController>
+        [HttpGet("ten-latest")]
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetTenlatestProducts()
+        {
+            IEnumerable<Product> products;
+
+            products = await _productsDAO.GetTenLatestProductsAsync();
+
+            return Ok(products.ToDtos());
+
+        }
+            
+
         // GET: api/ProductsController
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get() => Ok(_productsDAO.GetAll());
+        public ActionResult<IEnumerable<productDTO>> Get() => Ok(_productsDAO.GetAllAsync());
 
-        // GET: api/ProductsController>
-        [HttpGet("latest10")]
-        public ActionResult<IEnumerable<Product>> GetTenlatestProducts() => Ok(_productsDAO.GetTenLatestProducts());
-
+        
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
-        public ActionResult<Product> Get(int id) => _productsDAO.Get(id);
+        public async Task<ActionResult<Product>> Get(int id) => await _productsDAO.GetAsync(id);
 
         // POST api/<ProductsController>
         [HttpPost]
-        public int Post([FromBody] Product product) => _productsDAO.Insert(product);
+        public Task<int> Post([FromBody] Product product) => _productsDAO.InsertAsync(product);
 
 
     }
