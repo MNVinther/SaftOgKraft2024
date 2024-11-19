@@ -9,14 +9,14 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  //<ItemGroup>
-    //<Compile Remove="DataAccess\**" />
-    //<Compile Remove="WebApiClient\**" />
-    //<EmbeddedResource Remove="DataAccess\**" />
-    //<EmbeddedResource Remove="WebApiClient\**" />
-    //<None Remove="DataAccess\**" />
-    //<None Remove="WebApiClient\**" />
-  //</ItemGroup>
+  <!-- <ItemGroup>
+    <Compile Remove="DataAccess\**" />
+    <Compile Remove="WebApiClient\**" />
+    <EmbeddedResource Remove="DataAccess\**" />
+    <EmbeddedResource Remove="WebApiClient\**" />
+    <None Remove="DataAccess\**" />
+    <None Remove="WebApiClient\**" />
+  </ItemGroup> -->
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
