@@ -35,10 +35,25 @@ public class ProductDAO : BaseDAO, IProductDAO
             throw new Exception($"Error getting latest blog posts: '{ex.Message}'.", ex);
 }
 }
-    
-    public Task<Product> GetAsync(int id)
+
+    public async Task<Product> GetProductByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var query = "SELECT * FROM Product WHERE ProductId = @Id";
+            using var connection = CreateConnection();
+            var product = await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} was not found.");
+            }
+            return product;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception($"Error retrieving product with ID {id}: '{ex.Message}'.", ex);
+        }
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()

@@ -13,16 +13,13 @@
                 <h2>Most popular products</h2>
                 <br />
                 
-                @foreach (var item in Model)
+                @foreach (var product in Model)
                 {
                     <figure>
-                    @item.Name
-                    <br />
-                    @item.Description
-                    <br />
-                    @item.Price
-                    <br />
-                    <button>HEJ</button>
+                        <h3>@product.Name</h3>
+                        <p>@product.Description</p>
+                        <p>Price: $@product.Price</p>
+                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = product.Id, quantity = 1 })">Add To Cart</a>
                     </figure>
                 }
                
