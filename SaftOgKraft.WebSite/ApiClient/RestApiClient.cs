@@ -101,13 +101,27 @@ namespace SaftOgKraft.WebSite.ApiClient
             return response.Data;
         }
 
+        public async Task<ProductDto> GetProductByIdAsync(int id)
+        {
+
+            var request = new RestRequest($"products/{id}", Method.Get);
+
+            var response = await _restClient.ExecuteAsync<ProductDto>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error retrieving product with ID {id}. Message was: {response.Content}");
+            }
+
+            return response.Data;
+        }
+
         //public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         //{
         //    return await _restClient.Get<IEnumerable<ProductDto>>(new RestRequest("blogposts/latest10"));
         //}
 
 
-        // public Task<bool> UpdateProductAsync(ProductDto entity)
+                // public Task<bool> UpdateProductAsync(ProductDto entity)
         public async Task<bool> UpdateProductAsync(ProductDto product)
         {
             var request = new RestRequest($"products/{product.Id}", Method.Put)
@@ -120,4 +134,7 @@ namespace SaftOgKraft.WebSite.ApiClient
             return response.Data;
         }
     }
+
+    
+
 }
