@@ -14,7 +14,7 @@ public class CartController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return View(GetCartFromCookie());
     }
 
     public async Task<ActionResult> Edit(int id, int quantity)
@@ -27,15 +27,15 @@ public class CartController : Controller
         return View("Index", cart);
     }
 
-    public async Task<ActionResult> Add(int id, int quantity)
+    public async Task<IActionResult> Add(int id, int quantity)
     {
-        var product = LoadUpdateAndSaveCart(async cart =>
+        var cart = await LoadUpdateAndSaveCart(async cart =>
         {
             var product = await _restClient.GetProductByIdAsync(id);
             cart.ChangeQuantity(new ProductQuantity(product, quantity));
         });
 
-        return RedirectToAction("Index");
+        return View("Index", cart);
     }
 
     public async Task<ActionResult> Delete(int id)
