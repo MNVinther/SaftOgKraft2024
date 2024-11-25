@@ -27,16 +27,17 @@ public class CartController : Controller
         return View("Index", cart);
     }
 
-    public async Task<IActionResult> Add(int id, int quantity)
+   public async Task<IActionResult> Add(int id, int quantity)
+{
+    var cart = await LoadUpdateAndSaveCart(async cart =>
     {
-        var cart = await LoadUpdateAndSaveCart(async cart =>
-        {
-            var product = await _restClient.GetProductByIdAsync(id);
-            cart.ChangeQuantity(new ProductQuantity(product, quantity));
-        });
+        var product = await _restClient.GetProductByIdAsync(id);
+        cart.ChangeQuantity(new ProductQuantity(product, quantity));
+    });
 
-        return View("Index", cart);
-    }
+    //return View("Index", cart);
+    return NoContent();
+}
 
     public async Task<ActionResult> Delete(int id)
     {
