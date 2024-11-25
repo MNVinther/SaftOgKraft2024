@@ -12,10 +12,11 @@
             <section id="section-products">
                 <h2>Most popular products</h2>
                 <br />
-                
+                <div class="product-list">
                 @foreach (var item in Model)
                 {
-                    <figure>
+                    <div class="product-item">
+                    <img src="@item.PictureUrl" alt="@item.Name" class="product-image" />
                     @item.Name
                     <br />
                     @item.Description
@@ -23,8 +24,9 @@
                     @item.Price
                     <br />
                     <button>HEJ</button>
-                    </figure>
+                    </div>
                 }
+        </div>
                
 
                

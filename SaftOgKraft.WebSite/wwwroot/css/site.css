@@ -17,6 +17,24 @@
     object-fit: contain;
 
 }
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 200px;
+    text-align: center;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
 
     #section-hero .hero-image figcaption {
         height: 5em;

@@ -22,7 +22,7 @@ public class ProductDAO : BaseDAO, IProductDAO
         try
         {
             // Define the query
-            var query = "SELECT TOP(10) ProductId as Id, ProductName as Name, Description, Price FROM Product ORDER BY ProductId DESC";
+            var query = "SELECT TOP(10) ProductId as Id, ProductName as Name, Description, Price, PictureUrl FROM Product ORDER BY ProductId DESC";
 
             // Create and use a new connection
             using var connection = CreateConnection();
