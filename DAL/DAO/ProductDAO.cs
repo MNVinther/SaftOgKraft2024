@@ -40,7 +40,8 @@ public class ProductDAO : BaseDAO, IProductDAO
     {
         try
         {
-            var query = "SELECT * FROM Product WHERE ProductId = @Id";
+            //var query = "SELECT * FROM Product WHERE ProductId = @Id";
+            var query = "SELECT ProductId as Id, ProductName as Name, Description, Price FROM Product WHERE ProductId = @Id";
             using var connection = CreateConnection();
             var product = await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
             if (product == null)
@@ -48,6 +49,8 @@ public class ProductDAO : BaseDAO, IProductDAO
                 throw new KeyNotFoundException($"Product with ID {id} was not found.");
             }
             return product;
+
+                
         }
 
         catch (Exception ex)

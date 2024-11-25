@@ -16,7 +16,7 @@ public class ProductQuantity
         Price = product.Price;
     }
 
-    public ProductQuantity(Task<ProductDto> task, int quantity) { }
+    public ProductQuantity() { }
 
     public decimal GetTotalPrice()
     {
