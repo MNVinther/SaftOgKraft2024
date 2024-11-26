@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SaftOgKraft.WebSite.ApiClient.DTO;
+using SaftOgKraft.WebSite.ApiClient.DTOs;
 
 namespace SaftOgKraft.WebSite.ApiClient
 {

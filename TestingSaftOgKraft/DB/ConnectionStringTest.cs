@@ -20,10 +20,8 @@ public class ConnectionStringTest
         // Act & Assert
         Assert.DoesNotThrow(() =>
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-            }
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
         }, "The connection string is invalid or the database is unavailable.");
     }
 }
