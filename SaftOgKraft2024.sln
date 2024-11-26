@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaftOgKraft.WebSite", "SaftOgKraft.WebSite\SaftOgKraft.WebSite.csproj", "{8EADF2BE-C02D-4B90-8D85-2ED3EA0C6644}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Employee.App", "Employee.App\Employee.App.csproj", "{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3A081A15-8CCE-46E2-9389-79692B2AC60E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -30,10 +28,6 @@ Global
 		{8EADF2BE-C02D-4B90-8D85-2ED3EA0C6644}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EADF2BE-C02D-4B90-8D85-2ED3EA0C6644}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EADF2BE-C02D-4B90-8D85-2ED3EA0C6644}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F11FBA1-992E-4B26-8D18-6E3F4EBEB6A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -17,7 +17,7 @@ namespace SaftOgKraft.WebApi.Controllers
 
         // GET: api/ProductsController>
         [HttpGet("ten-latest")]
-        public async Task<ActionResult<IEnumerable<productDTO>>> GetTenlatestProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetTenlatestProducts()
         {
             IEnumerable<Product> products;
 
@@ -30,12 +30,12 @@ namespace SaftOgKraft.WebApi.Controllers
 
         // GET: api/ProductsController
         [HttpGet]
-        public ActionResult<IEnumerable<productDTO>> Get() => Ok(_productsDAO.GetAllAsync());
+        public ActionResult<IEnumerable<ProductDTO>> Get() => Ok(_productsDAO.GetAllAsync());
 
         
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get(int id) => await _productsDAO.GetAsync(id);
+        public async Task<ActionResult<Product>> Get(int id) => Ok(await _productsDAO.GetAsync(id));
 
         // POST api/<ProductsController>
         [HttpPost]

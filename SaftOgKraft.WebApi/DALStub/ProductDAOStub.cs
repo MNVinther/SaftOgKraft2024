@@ -4,21 +4,22 @@ namespace SaftOgKraft.WebApi.DALStub
 {
     public class ProductDAOStub
     {
-        #region intern database der emulerer database
+        #region intern database som emulerer database
 
-        private static List<Product> _products = new List<Product>()
-        {
-            new Product() { Id = 1, Name = "KraftigSaft", Price = 10, Description = "Den lækreste saft" },
-            new Product() { Id = 2, Name = "SødeSaft", Price = 8, Description = "Sød og frugtrig saft" },
-            new Product() { Id = 3, Name = "CitrusSaft", Price = 12, Description = "Frisk citrussmag" },
-            new Product() { Id = 4, Name = "BærrySaft", Price = 11, Description = "Fuld af bærsmag" },
-            new Product() { Id = 5, Name = "GrønSaft", Price = 9, Description = "Grøn smoothie" },
-            new Product() { Id = 6, Name = "6Saft", Price = 8, Description = "Sød og frugtrig saft" },
-            new Product() { Id = 7, Name = "7Saft", Price = 12, Description = "Frisk citrussmag" },
-            new Product() { Id = 8, Name = "8Saft", Price = 11, Description = "Fuld af bærsmag" },
-            new Product() { Id = 9, Name = "9Saft", Price = 9, Description = "Grøn smoothie" },
-            new Product() { Id = 10, Name = "10Saft", Price = 9, Description = "Grøn smoothie" },
-        };
+        private static readonly List<Product> _products =
+        [
+            // New Product explicit in the List above which only takes Products.
+            new() { Id = 1, Name = "KraftigSaft", Price = 10, Description = "Den lækreste saft" },
+            new() { Id = 2, Name = "SødeSaft", Price = 8, Description = "Sød og frugtrig saft" },
+            new() { Id = 3, Name = "CitrusSaft", Price = 12, Description = "Frisk citrussmag" },
+            new() { Id = 4, Name = "BærrySaft", Price = 11, Description = "Fuld af bærsmag" },
+            new() { Id = 5, Name = "GrønSaft", Price = 9, Description = "Grøn smoothie" },
+            new() { Id = 6, Name = "6Saft", Price = 8, Description = "Sød og frugtrig saft" },
+            new() { Id = 7, Name = "7Saft", Price = 12, Description = "Frisk citrussmag" },
+            new() { Id = 8, Name = "8Saft", Price = 11, Description = "Fuld af bærsmag" },
+            new() { Id = 9, Name = "9Saft", Price = 9, Description = "Grøn smoothie" },
+            new() { Id = 10, Name = "10Saft", Price = 9, Description = "Grøn smoothie" },
+        ];
 
         #endregion
 
@@ -35,7 +36,8 @@ namespace SaftOgKraft.WebApi.DALStub
         public Product Get(int id)
         {
             // Searches the product list for the first product with the matching ID
-            return _products.FirstOrDefault(product => product.Id == id);
+            // Nullcheck, throw exception if no matching IDs
+            return _products.FirstOrDefault(product => product.Id == id) ?? throw new Exception("could not find product - check ID again");
         }
 
         public int Insert(Product product)

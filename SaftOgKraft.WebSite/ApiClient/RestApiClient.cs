@@ -97,6 +97,12 @@ namespace SaftOgKraft.WebSite.ApiClient
             {
                 throw new Exception($"Error retrieving latest products. Message was {response.Content}");
             }
+
+            // Nullcheck
+            if (response.Data == null)
+            {
+                throw new Exception($"The response was null. Message was {response.Content}");
+            }
             // Return the data from the response, or an empty list if the data is null
             return response.Data;
         }
