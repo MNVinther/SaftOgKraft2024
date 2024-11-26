@@ -11,11 +11,12 @@ namespace SaftOgKraft.WebSite.ApiClient.DTO
     {
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [Required]
         public decimal Price { get; set; }
         [Required]
-        public string Description { get; set; }
+        public required string Description { get; set; }
+        public string PictureUrl { get; set; }
         //static int Stock { get; set; }
 
     }

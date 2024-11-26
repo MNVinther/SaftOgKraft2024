@@ -22,7 +22,7 @@ public class ProductDAO : BaseDAO, IProductDAO
         try
         {
             // Define the query
-            var query = "SELECT TOP(10) ProductId as Id, ProductName as Name, Description, Price FROM Product ORDER BY ProductId DESC";
+            var query = "SELECT TOP(10) ProductId as Id, ProductName as Name, Description, Price, PictureUrl FROM Product ORDER BY ProductId DESC";
 
             // Create and use a new connection
             using var connection = CreateConnection();
@@ -35,10 +35,28 @@ public class ProductDAO : BaseDAO, IProductDAO
             throw new Exception($"Error getting latest blog posts: '{ex.Message}'.", ex);
 }
 }
-    
-    public Task<Product> GetAsync(int id)
+
+    public async Task<Product> GetProductByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            //var query = "SELECT * FROM Product WHERE ProductId = @Id";
+            var query = "SELECT ProductId as Id, ProductName as Name, Description, Price FROM Product WHERE ProductId = @Id";
+            using var connection = CreateConnection();
+            var product = await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} was not found.");
+            }
+            return product;
+
+                
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception($"Error retrieving product with ID {id}: '{ex.Message}'.", ex);
+        }
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()
