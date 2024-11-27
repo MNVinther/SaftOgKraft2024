@@ -5,7 +5,7 @@
 async function sortProducts() {
   const sortOrder = document.getElementById("sort").value;
 
-  const response = await fetch(`/api/v1/products/sorted?sortOrder=${sortOrder}`);
+  const response = await fetch(`Product/GetSortedProducts?sortOrder=${sortOrder}`);
   const products = await response.json(); // Ensure this line is unique.
 
   if (!response.ok) {
@@ -17,18 +17,23 @@ async function sortProducts() {
 
   products.forEach(product => {
     const productCard = `
-            <div class="product-card">
-                <img src="${product.pictureUrl}" alt="${product.name}" />
-                <h3>${product.name}</h3>
-                <p>${product.description}</p>
-                <p>Price: $${product.price}</p>
-            </div>
+            <div class="product-item">
+                    <img src="${product.pictureUrl}" alt="${product.name}" class="product-image" />
+                    <h3>${product.name}</h3>
+                    <br />
+                    <p>${product.description}</p>
+                    <br />
+                    <p>Price: $ ${product.price}</p>
+                    <br />
+                    <a class="btn btn-primary" href="/Cart/Add?id=${product.id}&quantity=1">Add To Cart</a>
+                </div>
         `;
     productsContainer.innerHTML += productCard;
   });
 }
 
 // Optionally load default products on page load.
-document.addEventListener("DOMContentLoaded", () => {
-  sortProducts();
+document.addEventListener("DOMContentLoaded", async () => {
+  await sortProducts();
+  
 });

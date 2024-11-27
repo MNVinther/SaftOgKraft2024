@@ -23,7 +23,7 @@ public class ProductController : Controller
         return View(products);
     }
 
-    [HttpGet("GetSortedProducts")]
+    
     public async Task<ActionResult> GetSortedProducts(string sortOrder = "")
     {
         var products = await _restClient.GetSortedProductsAsync(sortOrder);
