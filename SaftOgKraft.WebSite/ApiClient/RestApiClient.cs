@@ -9,7 +9,7 @@ namespace SaftOgKraft.WebSite.ApiClient
         private readonly RestClient _restClient;
 
         //constructor der modtager basis URL'en til APi'et
-        //https://localhost:7106/api/v1/
+        //https://localhost:7154/api/v1/
 
         public RestApiClient(string baseApiUrl)
         {
@@ -25,7 +25,7 @@ namespace SaftOgKraft.WebSite.ApiClient
         public async Task<int> CreateProductAsync(ProductDto product)
         {
             // Create a POST request for products and add the product data as JSON.
-            var request = new RestRequest("products", Method.Post)
+            var request = new RestRequest("", Method.Post)
                           .AddJsonBody(product);
 
             // Execute the request 
@@ -67,14 +67,29 @@ namespace SaftOgKraft.WebSite.ApiClient
 
             // Execute the request and recive a collection of ProductDto
             var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
-
             if (!response.IsSuccessful)
             {
-            // Handle failure by throwing an exception
-                throw new Exception($"Error retrieving all products. Message was {response.Content}");
+                // Handle failure by throwing an exception
+                throw new Exception($"Error retrieving products. Message was {response.Content}");
             }
-            return response.Data ?? Enumerable.Empty<ProductDto>();
+            // Return a list of products or an empty list 
+            return response.Data;
         }
+
+        public async Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "asc")
+        {
+            var request = new RestRequest($"products/sorted?sortOrder={sortOrder}");
+            request.Method = Method.Get;
+
+            var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error retrieving sorted products. Message was {response.Content}");
+            }
+
+            return response.Data;
+        }
+    
 
         // Searches for products by part of their name or description.
         public async Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription)

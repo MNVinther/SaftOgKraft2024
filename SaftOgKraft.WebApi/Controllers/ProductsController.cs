@@ -30,8 +30,28 @@ namespace SaftOgKraft.WebApi.Controllers
 
 
         // GET: api/ProductsController
+        [HttpGet("sorted")]
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetSortedProducts(string sortOrder = "asc")
+        {
+            var products = await _productsDAO.GetAllAsync();
+
+                products = sortOrder.ToLower() switch
+                {
+                    "asc" => products.OrderBy(p => p.Price),
+                    "desc" => products.OrderByDescending(p => p.Price),
+                    _ => products
+                };
+            
+            return Ok(products.ToDtos());
+        }
+
+        // GET: api/ProductsController
         [HttpGet]
-        public ActionResult<IEnumerable<productDTO>> Get() => Ok(_productsDAO.GetAllAsync());
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetAllProducts()
+        {
+            var products = await _productsDAO.GetAllAsync();
+            return Ok(products.ToDtos());
+        }
 
 
         // GET api/<ProductsController>/5

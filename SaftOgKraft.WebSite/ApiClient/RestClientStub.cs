@@ -49,6 +49,11 @@ namespace SaftOgKraft.WebSite.ApiClient
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "asc")
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<ProductDto>> GetTenLatestProducts()
         {
             // Get the first 10 products from the _products collection
