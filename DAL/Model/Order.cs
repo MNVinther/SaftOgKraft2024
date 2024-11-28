@@ -12,7 +12,7 @@ public class Order
     public required int CustomerId { get; set; }
     public required decimal TotalAmount { get; set; }
     public required string Status { get; set; }
-    public List<OrcerLines> OrderLines { get; set; }
+    // public List<OrderLine> OrderLines { get; set; }
 
 }
 

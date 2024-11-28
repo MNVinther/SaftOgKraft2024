@@ -18,7 +18,7 @@ public class ProductsController : ControllerBase
 
         // GET: api/ProductsController
         [HttpGet("sorted")]
-        public async Task<ActionResult<IEnumerable<productDTO>>> GetSortedProducts(string sortOrder = "")
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetSortedProducts(string sortOrder = "")
         {
             var products = await _productsDAO.GetAllAsync();
 
@@ -34,7 +34,7 @@ public class ProductsController : ControllerBase
 
         // GET: api/ProductsController
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<productDTO>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             var products = await _productsDAO.GetAllAsync();
             return Ok(products.ToDtos());
@@ -80,7 +80,7 @@ public class ProductsController : ControllerBase
     
     // GET api/<ProductsController>/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> Get(int id) => Ok(await _productsDAO.GetAsync(id));
+    public async Task<ActionResult<Product>> GetProductByIdAsync(int id) => Ok(await _productsDAO.GetProductByIdAsync(id));
 
     // POST api/<ProductsController>
     [HttpPost]
