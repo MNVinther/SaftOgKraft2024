@@ -39,6 +39,11 @@ namespace SaftOgKraft.WebSite.ApiClient
             throw new NotImplementedException();
         }
 
+        public Task<ProductDto> GetProductByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription)
         {
             throw new NotImplementedException();

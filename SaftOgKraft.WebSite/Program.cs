@@ -12,6 +12,9 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         //builder.Services.AddSingleton<IRestClient, RestClientStub>();
+
+        // Registers the `RestApiClient` implementation of `IRestClient`,
+        // initialized with the base URL of the API.
         builder.Services.AddSingleton<IRestClient>((_) => new RestApiClient("https://localhost:7106/api/v1"));
 
         var app = builder.Build();

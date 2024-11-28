@@ -12,11 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingSaftOgKraft", "TestingSaftOgKraft\TestingSaftOgKraft.csproj", "{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingSaftOgKraft", "TestingSaftOgKraft\TestingSaftOgKraft.csproj", "{D6A59DC8-D8F0-4700-8F60-EA580FB398EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaftOgKraft.WebApi", "SaftOgKraft.WebApi\SaftOgKraft.WebApi.csproj", "{A8807097-3F0E-4158-8386-570A0D866E22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaftOgKraft.WebApi", "SaftOgKraft.WebApi\SaftOgKraft.WebApi.csproj", "{A8807097-3F0E-4158-8386-570A0D866E22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{79F6AF96-6E00-43C2-BC92-7E894F786E53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{79F6AF96-6E00-43C2-BC92-7E894F786E53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaftOgKraft.OrderManager", "SaftOgKraft.OrderManager\SaftOgKraft.OrderManager.csproj", "{26798A6B-FDF9-4D77-BA01-3AB927252887}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F6AF96-6E00-43C2-BC92-7E894F786E53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26798A6B-FDF9-4D77-BA01-3AB927252887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26798A6B-FDF9-4D77-BA01-3AB927252887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26798A6B-FDF9-4D77-BA01-3AB927252887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26798A6B-FDF9-4D77-BA01-3AB927252887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

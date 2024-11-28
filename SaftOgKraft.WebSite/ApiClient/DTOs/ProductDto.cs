@@ -16,6 +16,6 @@ public class ProductDto
     public decimal Price { get; set; }
     [Required]
     public required string Description { get; set; }
+    public string PictureUrl { get; set; }
     //static int Stock { get; set; }
-
 }
