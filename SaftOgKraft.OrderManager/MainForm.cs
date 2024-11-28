@@ -10,9 +10,12 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SaftOgKraft.OrderManager.ApiClient;
+using SaftOgKraft.OrderManager.ApiClient.DTOs;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace SaftOgKraft.OrderManager;    
+namespace SaftOgKraft.OrderManager;
 
 // Main form that acts as the central UI for managing orders and order lines
 public partial class MainForm : Form
@@ -20,19 +23,35 @@ public partial class MainForm : Form
     // The ID of the currently selected order
     private int currentOrderId;
 
+    // REST API for ordrer
+    private IOrderRestClient _orderRestClientStub;
+    private IOrderRestClient _orderRestClient;
+
+    // Cache for order lines
+    private List<OrderLineDto> _orderLinesCache;
+
+
     public MainForm()
     {
         // Initialize UI components
         InitializeComponent();
+
+        // Dependency injection here
+        _orderRestClientStub = new OrderRestClientStub();
+
+
+        // Set the API base URL
+        string baseApiUrl = "http://your-api-url/";
+        _orderRestClient = new OrderRestClient(baseApiUrl);
     }
 
     // Event handler to commit edits in the current cell in dataGridOrderLines
-    private void DataGridOrderLines_CurrentCellDirtyStateChanged(object sender, EventArgs e) 
-    { 
-        if (dataGridOrderLines.IsCurrentCellDirty) 
-        { 
-            dataGridOrderLines.CommitEdit(DataGridViewDataErrorContexts.Commit); 
-        } 
+    private void DataGridOrderLines_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+    {
+        if (dataGridOrderLines.IsCurrentCellDirty)
+        {
+            dataGridOrderLines.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
     }
 
     // Load event for the form
@@ -41,17 +60,11 @@ public partial class MainForm : Form
         // Events for handling cell value and state changes
         dataGridOrderLines.CellValueChanged += DataGridOrderLines_CellValueChanged;
         dataGridOrderLines.CurrentCellDirtyStateChanged += DataGridOrderLines_CurrentCellDirtyStateChanged;
-
     }
 
     // Handles the Orders button event 
-    private void btnOrders_Click(object sender, EventArgs e)
+    private async void btnOrders_Click(object sender, EventArgs e)
     {
-        //	•	Hente ordrer fra API’et.
-        //  •	Indlæse data i dataGridOrders.
-        //  •	Gøre dataGridOrders synlig.
-        //  •   Indlæse data fra REST API
-
         // Hide the other controls in content panel
         foreach (Control control in panelContent.Controls)
         {
@@ -61,49 +74,48 @@ public partial class MainForm : Form
         // Make dataGridOrders visible to display the order list
         dataGridOrders.Visible = true;
 
-        // Load orders data from API
-        //LoadOrders();
+        //Load a list of orders
+        //await LoadOrdersAsync();
 
         // LoadDummyOrders for testing 
-        LoadDummyOrders();
+        await LoadDummyOrdersAsync();
 
         // Add a Status column to dataGridOrders if it doesn't exist
-        if (!dataGridOrders.Columns.Contains("PackedStatus"))
+        if (!dataGridOrders.Columns.Contains("Status"))
         {
             var statusColumn = new DataGridViewTextBoxColumn
             {
                 HeaderText = "Status",
-                Name = "PackedStatus",
+                Name = "Status",
                 ReadOnly = true,
                 Width = 100
             };
             dataGridOrders.Columns.Add(statusColumn);
         }
-
+        // Set all other columns to read-only
+        foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
+        {
+            if (column.Name != "Packed")
+            {
+                column.ReadOnly = true;
+            }
+        }
     }
 
     // Load orders from an API
-    private void LoadOrders()
+    private async Task LoadOrdersAsync()
     {
         try
         {
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri("http://your-api-url/");
-            //    var response = client.GetAsync("orders").Result;
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var orders = response.Content.ReadAsAsync<List<Order>>().Result;
-            //        dataGridOrders.DataSource = orders;
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Kunne ikke hente ordrer.");
-            //    }
-            //}
+            // Get orders from the API
+            var orders = await _orderRestClient.GetAllOrdersAsync();
+
+            // Put data to DataGridView
+            dataGridOrders.DataSource = orders.ToList();
         }
         catch (Exception ex)
         {
+            // Handle failure by throwing an exception
             MessageBox.Show($"Der skete en fejl: {ex.Message}");
         }
     }
@@ -111,10 +123,8 @@ public partial class MainForm : Form
     // Handles a click on a cell in dataGridOrders
     private void dataGridOrders_CellClick(object sender, DataGridViewCellEventArgs e)
     {
-        //•Tage ordre-ID’et fra den valgte række.
-        //•	Skjule dataGridOrders.
-        //•	Gøre dataGridOrderLines synlig og indlæse ordrelinjer baseret på ordre - ID’et.
-        if (e.RowIndex >= 0) // Ensure that the click is on a valid row
+        // Ensure that the click is on a valid row
+        if (e.RowIndex >= 0)
         {
             // Retrieve the order ID from the selected row
             currentOrderId = Convert.ToInt32(dataGridOrders.Rows[e.RowIndex].Cells["OrderId"].Value);
@@ -125,7 +135,7 @@ public partial class MainForm : Form
     }
 
     // Display order line details for a given order ID
-    private void ShowOrderDetails(int orderId)
+    private async void ShowOrderDetails(int orderId)
     {
         // Hide the order list and show the order lines
         dataGridOrders.Visible = false;
@@ -133,68 +143,31 @@ public partial class MainForm : Form
         btnBack.Visible = true;
 
         // Load order lines for the selected order
-        //LoadOrderLines(orderId);
+        //await LoadOrderLinesAsync(orderId);
 
         // LoadDummyOrders for testing 
-        LoadDummyOrderLines();
+        await LoadDummyOrderLinesAsync(orderId);
 
-    }
+        // Set the value of "Packed" checkbox based on cached data
+        foreach (var orderLine in _orderLinesCache)
+        {
+            var rowIndex = dataGridOrderLines.Rows.Cast<DataGridViewRow>()
+                .FirstOrDefault(row => (int)row.Cells["OrderLineId"].Value == orderLine.OrderLineId)?.Index;
 
-    // Load order lines from an API
-    private void LoadOrderLines(int orderId)
-    {
-        try
-        {
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri("http://your-api-url/");
-            //    var response = client.GetAsync($"orders/{orderId}/lines").Result;
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var orderLines = response.Content.ReadAsAsync<List<OrderLine>>().Result;
-            //        dataGridOrderLines.DataSource = orderLines;
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Kunne ikke hente ordrelinjer.");
-            //    }
-            //}
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
+            if (rowIndex != null)
+            {
+                dataGridOrderLines.Rows[rowIndex.Value].Cells["Packed"].Value = orderLine.Packed;
+            }
         }
 
-
-    }
-
-    // Load dummy data for orders 
-    private void LoadDummyOrders()
-    {
-        // Lav en liste af dummy ordrer
-        var dummyOrders = new List<Order>
-    {
-        new Order { OrderId = 1, CustomerName = "Kunde A", OrderDate = DateTime.Now.AddDays(-2) },
-        new Order { OrderId = 2, CustomerName = "Kunde B", OrderDate = DateTime.Now.AddDays(-1) },
-        new Order { OrderId = 3, CustomerName = "Kunde C", OrderDate = DateTime.Now }
-    };
-
-        // Send dummy data to the DataOrderGridView
-        dataGridOrders.DataSource = dummyOrders;
-    }
-
-    // Load dummy data for order lines
-    private void LoadDummyOrderLines()
-    {
-        var dummyOrderLines = new List<OrderLine>
-    {
-        new OrderLine { ProductId = 101, ProductName = "Produkt 1", Quantity = 2,},
-        new OrderLine { ProductId = 102, ProductName = "Produkt 2", Quantity = 1,},
-        new OrderLine { ProductId = 103, ProductName = "Produkt 3", Quantity = 5,}
-    };
-
-        // Send dummy data to the DataOrderLineGridView 
-        dataGridOrderLines.DataSource = dummyOrderLines;
+        // Set all other columns to read-only
+        foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
+        {
+            if (column.Name != "Packed")
+            {
+                column.ReadOnly = true;
+            }
+        }
 
         // Add a "Packed" checkbox column if it doesn't exist
         if (!dataGridOrderLines.Columns.Contains("Packed"))
@@ -209,15 +182,69 @@ public partial class MainForm : Form
             dataGridOrderLines.Columns.Add(checkBoxColumn);
         }
 
-        // Set all other columns to read-only
-        foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
-        {
-            if (column.Name != "Packed")
-            {
-                column.ReadOnly = true;
-            }
-        }
+    }
 
+    // Load order lines from an API
+    private async void LoadOrderLinesAsync(int orderId)
+    {
+        try
+        {
+            // Get orderLine from the API
+            var orderLines = await _orderRestClient.GetOrderLinesAsync(orderId);
+
+            // Cache order lines
+            _orderLinesCache = orderLines.ToList();
+
+            // Put data to DataGridView
+            //dataGridOrderLines.DataSource = orderLines.ToList();
+
+            dataGridOrderLines.DataSource = _orderLinesCache;
+
+        }
+        catch (Exception ex)
+        {
+            // Handle failure by throwing an exception
+            MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
+        }
+    }
+
+    // Load dummy data for orders 
+    private async Task LoadDummyOrdersAsync()
+    {
+        try
+        {
+            var dummyOrders = await _orderRestClientStub.GetAllOrdersAsync();
+
+            // Send dummy data to the DataOrderGridView
+            dataGridOrders.DataSource = dummyOrders;
+        }
+        catch (Exception ex)
+        {
+            // Handle failure by throwing an exception
+            MessageBox.Show($"Der skete en fejl: {ex.Message}");
+        }
+    }
+
+    // Load dummy data for order lines
+    private async Task LoadDummyOrderLinesAsync(int orderId)
+    {
+        try
+        {
+            var dummyOrderLines = await _orderRestClientStub.GetOrderLinesAsync(orderId);
+
+            // Cache order lines
+            _orderLinesCache = dummyOrderLines.ToList();
+
+
+            // Send dummy data to the DataOrderLineGridView 
+            //dataGridOrderLines.DataSource = dummyOrderLines;
+            dataGridOrderLines.DataSource = _orderLinesCache;
+        }
+        catch (Exception ex)
+        {
+            // Handle failure by throwing an exception
+            MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
+        }
     }
 
     // Handles changes to the Packed checkbox values in dataGridOrderLines
@@ -244,7 +271,7 @@ public partial class MainForm : Form
             }
             else
             {
-                RemovePackedStatus(); 
+                RemovePackedStatus();
             }
         }
     }
@@ -255,10 +282,10 @@ public partial class MainForm : Form
         foreach (DataGridViewRow row in dataGridOrders.Rows)
         {
             // Use ordrId to find the current ordre
-            if ((int)row.Cells["OrderId"].Value == currentOrderId) 
+            if ((int)row.Cells["OrderId"].Value == currentOrderId)
             {
                 // Set the packed status
-                row.Cells["PackedStatus"].Value = "✔️ Pakket"; 
+                row.Cells["Status"].Value = "✔️ Pakket";
                 break;
             }
         }
@@ -275,7 +302,7 @@ public partial class MainForm : Form
             if ((int)row.Cells["OrderId"].Value == currentOrderId)
             {
                 // Reset the packed status
-                row.Cells["PackedStatus"].Value = "Ikke pakket"; 
+                row.Cells["Status"].Value = "Ikke pakket";
                 break;
             }
         }
