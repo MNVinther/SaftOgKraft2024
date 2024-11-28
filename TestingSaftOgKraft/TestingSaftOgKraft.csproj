@@ -47,8 +47,4 @@
     <ProjectReference Include="..\SaftOgKraft.WebSite\SaftOgKraft.WebSite.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DAL\" />
-  </ItemGroup>
-
 </Project>

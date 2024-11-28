@@ -33,8 +33,8 @@ public class ProductDAO : BaseDAO, IProductDAO
         catch (Exception ex)
         {
             throw new Exception($"Error getting latest blog posts: '{ex.Message}'.", ex);
-}
-}
+        }
+    }
     
     public Task<Product> GetAsync(int id)
     {
