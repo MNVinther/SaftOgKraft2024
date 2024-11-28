@@ -1,4 +1,4 @@
-﻿using SaftOgKraft.WebSite.ApiClient.DTO;
+﻿using SaftOgKraft.WebSite.ApiClient.DTOs;
 namespace SaftOgKraft.WebSite.Models;
 
 public class ProductQuantity
