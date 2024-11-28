@@ -31,7 +31,7 @@ namespace SaftOgKraft.WebApi.Controllers
 
         // GET: api/ProductsController
         [HttpGet("sorted")]
-        public async Task<ActionResult<IEnumerable<productDTO>>> GetSortedProducts(string sortOrder = "asc")
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetSortedProducts(string sortOrder = "")
         {
             var products = await _productsDAO.GetAllAsync();
 

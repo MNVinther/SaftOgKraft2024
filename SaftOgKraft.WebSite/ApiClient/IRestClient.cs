@@ -11,7 +11,7 @@ namespace SaftOgKraft.WebSite.ApiClient
     {
         Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription);
         Task<IEnumerable<ProductDto>> GetAllProductsAsync();
-        Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "asc");
+        Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "");
 
         Task<IEnumerable<ProductDto>> GetTenLatestProducts();
 

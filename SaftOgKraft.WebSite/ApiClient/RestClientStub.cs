@@ -49,7 +49,7 @@ namespace SaftOgKraft.WebSite.ApiClient
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "asc")
+        public Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "")
         {
             throw new NotImplementedException();
         }

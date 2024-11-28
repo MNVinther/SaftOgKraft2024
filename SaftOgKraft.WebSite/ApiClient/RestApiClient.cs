@@ -76,7 +76,7 @@ namespace SaftOgKraft.WebSite.ApiClient
             return response.Data;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "asc")
+        public async Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "")
         {
             var request = new RestRequest($"products/sorted?sortOrder={sortOrder}", Method.Get);
             //request.Method = Method.Get;

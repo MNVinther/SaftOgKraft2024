@@ -5,7 +5,12 @@
 async function sortProducts() {
   const sortOrder = document.getElementById("sort").value;
 
-  const response = await fetch(`Product/GetSortedProducts?sortOrder=${sortOrder}`);
+  /*const response = await fetch(`Product/GetSortedProducts?sortOrder=${sortOrder}`);*/
+  const url = sortOrder
+    ? `Product/GetSortedProducts?sortOrder=${sortOrder}`
+    : `Product`; // Fetch unsorted products (default)
+
+  const response = await fetch(url);
   const products = await response.json(); // Ensure this line is unique.
 
   if (!response.ok) {
@@ -14,6 +19,7 @@ async function sortProducts() {
   }
   const productsContainer = document.getElementById("products");
   productsContainer.innerHTML = ""; // Clear existing products
+
 
   products.forEach(product => {
     const productCard = `
@@ -25,12 +31,18 @@ async function sortProducts() {
                     <br />
                     <p>Price: $ ${product.price}</p>
                     <br />
+                    <div class="cart-btn">
                     <a class="btn btn-primary" href="/Cart/Add?id=${product.id}&quantity=1">Add To Cart</a>
+                    </div>
                 </div>
+                
         `;
+       
     productsContainer.innerHTML += productCard;
   });
+  
 }
+
 
 // Optionally load default products on page load.
 document.addEventListener("DOMContentLoaded", async () => {

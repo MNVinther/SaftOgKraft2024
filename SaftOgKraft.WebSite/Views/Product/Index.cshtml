@@ -9,6 +9,7 @@
 <div>
     <label for="sort">Sort by:</label>
     <select id="sort" onchange="sortProducts()">
+        <option value="">Default</option>
         <option value="asc">Price: Low to High</option>
         <option value="desc">Price: High to Low</option>
     </select>
@@ -28,7 +29,9 @@
                     <br />
                     <p>Price: $@item.Price</p>
                     <br />
+                    <div class="cart-btn">
                     <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = item.Id, quantity = 1 })">Add To Cart</a>
+                    </div>
                 </div>
             }
             
