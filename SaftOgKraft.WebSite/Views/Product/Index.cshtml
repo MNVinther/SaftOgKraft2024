@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SaftOgKraft.WebSite.ApiClient.DTO.ProductDto>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+<div>
+    <label for="sort">Sort by:</label>
+    <select id="sort" onchange="sortProducts()">
+        <option value="">Default</option>
+        <option value="asc">Price: Low to High</option>
+        <option value="desc">Price: High to Low</option>
+    </select>
+</div>
+<div class="text-center">
+    <section id="section-products">
+        <h2>All products</h2>
+        <br />
+        <div class="product-list" id="products">
+            @foreach (var item in Model)
+            {
+                <div class="product-item">
+                    <img src="@item.PictureUrl" alt="@item.Name" class="product-image" />
+                    <h3>@item.Name</h3>
+                    <br />
+                    <p>@item.Description</p>
+                    <br />
+                    <p>Price: $@item.Price</p>
+                    <br />
+                    <div class="cart-btn">
+                    <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = item.Id, quantity = 1 })">Add To Cart</a>
+                    </div>
+                </div>
+            }
+            
+        </div>
+    </section>
+    <script src="~/js/site.js"></script>
+</div>

@@ -8,6 +8,7 @@ public class RestApiClient : IRestClient
     //restsharp klienten
     private readonly RestClient _restClient;
 
+
     //constructor der modtager basis URL'en til APi'et
     //https://localhost:7106/api/v1/
 
@@ -21,10 +22,20 @@ public class RestApiClient : IRestClient
         _restClient = mockClient;
     }
 
+
     public async Task<int> CreateProductAsync(ProductDto product)
     {
         var request = new RestRequest("products", Method.Post)
                       .AddJsonBody(product);
+        var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
+            if (!response.IsSuccessful)
+            {
+                // Handle failure by throwing an exception
+                throw new Exception($"Error retrieving products. Message was {response.Content}");
+            }
+            // Return a list of products or an empty list 
+            return response.Data;
+        }
 
         var response = await _restClient.ExecuteAsync<int>(request);
         return !response.IsSuccessful
@@ -63,7 +74,7 @@ public class RestApiClient : IRestClient
            // request.Method = Method.Get;
 
             // Execute the request and recive a collection of ProductDto
-           // var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
+            // var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
 
            // if (!response.IsSuccessful)
            // {
@@ -71,7 +82,21 @@ public class RestApiClient : IRestClient
                // throw new Exception($"Error retrieving all products. Message was {response.Content}");
            // }
            // return response.Data ?? Enumerable.Empty<ProductDto>();
-       // }
+       // }    
+
+        public async Task<IEnumerable<ProductDto>> GetSortedProductsAsync(string sortOrder = "")
+        {
+            var request = new RestRequest($"products/sorted?sortOrder={sortOrder}", Method.Get);
+            //request.Method = Method.Get;
+
+            var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error retrieving sorted products. Message was {response.Content}");
+            }
+
+            return response.Data;
+        }
 
     public async Task<IEnumerable<ProductDto>> GetProductByPartOfNameOrDescriptionAsync(string partOfNameOrDescription)
     {

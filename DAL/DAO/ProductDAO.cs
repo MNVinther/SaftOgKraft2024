@@ -63,7 +63,7 @@ public class ProductDAO : BaseDAO, IProductDAO
     {
         try
         {
-            var query = "SELECT * FROM Product";
+            var query = "SELECT ProductId as Id, ProductName as Name, Description, Price, PictureUrl FROM Product";
             using var connection = CreateConnection();
             return (await connection.QueryAsync<Product>(query)).ToList();
         }

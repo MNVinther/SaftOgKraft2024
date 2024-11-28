@@ -16,12 +16,35 @@ public class ProductsController : ControllerBase
 
     public ProductsController(IProductDAO productsDAO) => _productsDAO = productsDAO;
 
+        // GET: api/ProductsController
+        [HttpGet("sorted")]
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetSortedProducts(string sortOrder = "")
+        {
+            var products = await _productsDAO.GetAllAsync();
+
+                products = sortOrder.ToLower() switch
+                {
+                    "asc" => products.OrderBy(p => p.Price),
+                    "desc" => products.OrderByDescending(p => p.Price),
+                    _ => products
+                };
+            
+            return Ok(products.ToDtos());
+        }
+
+        // GET: api/ProductsController
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<productDTO>>> GetAllProducts()
+        {
+            var products = await _productsDAO.GetAllAsync();
+            return Ok(products.ToDtos());
+        }
+        
     // GET: api/ProductsController>
     [HttpGet("ten-latest")]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetTenlatestProducts()
     {
         IEnumerable<Product> products;
-
         products = await _productsDAO.GetTenLatestProductsAsync();
         return Ok(products.ToDtos());
     }
