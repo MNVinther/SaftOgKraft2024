@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SaftOgKraft.WebSite.Models;
-using System.Diagnostics;
 using SaftOgKraft.WebSite.ApiClient;
 
 namespace SaftOgKraft.WebSite.Controllers;

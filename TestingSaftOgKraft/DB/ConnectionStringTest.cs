@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 
 namespace TestingSaftOgKraft.DB;
@@ -19,10 +20,8 @@ public class ConnectionStringTest
         // Act & Assert
         Assert.DoesNotThrow(() =>
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-            }
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
         }, "The connection string is invalid or the database is unavailable.");
     }
 }
