@@ -4,21 +4,22 @@ namespace SaftOgKraft.WebApi.Controllers.DTOs.Converters;
 
 public static class DTOConverter
 {
-    public static productDTO ToDto(this Product productToConvert)
+    #region Product conversion
+    public static ProductDTO ToDto(this Product productToConvert)
     {
-        var productDto = new productDTO();
+        var productDto = new ProductDTO();
         productToConvert.CopyPropertiesTo(productDto);
         return productDto;
     }
 
-    public static Product FromDto(this productDTO productDtoToConvert)
+    public static Product FromDto(this ProductDTO productDtoToConvert)
     {
-        var product = new Product();
+        Product product = new Product();
         productDtoToConvert.CopyPropertiesTo(product);
         return product;
     }
 
-    public static IEnumerable<productDTO> ToDtos(this IEnumerable<Product> productsToConvert)
+    public static IEnumerable<ProductDTO> ToDtos(this IEnumerable<Product> productsToConvert)
     {
         foreach (var product in productsToConvert)
         {
@@ -26,11 +27,27 @@ public static class DTOConverter
         }
     }
 
-    public static IEnumerable<Product> FromDtos(this IEnumerable<productDTO> productDtosToConvert)
+    public static IEnumerable<Product> FromDtos(this IEnumerable<ProductDTO> productDtosToConvert)
     {
         foreach (var productDto in productDtosToConvert)
         {
             yield return productDto.FromDto();
         }
     }
+    #endregion
+
+    #region Order Conversion
+
+    public static TTarget ConvertTo<TSource, TTarget>(this TSource dtoToConvert) where TTarget : new()
+    {
+        if (dtoToConvert ==  null)
+        {
+            throw new ArgumentNullException(nameof(dtoToConvert));
+        }
+
+        TTarget target = new TTarget();
+        dtoToConvert.CopyPropertiesTo(target);
+        return target;
+    }
+    #endregion
 }

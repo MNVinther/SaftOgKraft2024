@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL.DAO;
+using Microsoft.AspNetCore.Mvc;
+using SaftOgKraft.WebApi.Controllers.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -7,15 +9,15 @@ namespace SaftOgKraft.WebApi.Controllers;
 [ApiController]
 public class OrdersController : ControllerBase
 {
-    private readonly IOrderDAO _ordersDAO;
+    private readonly IOrderDAO _orderDAO;
 
-    public OrdersController(IOrderDAO ordersDAO) => -ordersDAO = ordersDAO;
+    public OrdersController(IOrderDAO orderDAO) => _orderDAO = orderDAO;
 
     // GET: api/<OrdersController>
     [HttpGet]
     public IEnumerable<string> Get()
     {
-        return new string[] { "value1", "value2" };
+        return ["value1", "value2"];
     }
 
     // GET api/<OrdersController>/5
@@ -27,8 +29,9 @@ public class OrdersController : ControllerBase
 
     // POST api/<OrdersController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<ActionResult<int>> Post([FromBody] OrderDTO orderDTO)
     {
+        return Ok(await _orderDAO.InsertOrderAsync(orderDTO.FromDto()));
     }
 
     // PUT api/<OrdersController>/5
