@@ -45,7 +45,7 @@ public class RestApiClient : IRestClient
 
     public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
     {
-        var request = new RestRequest("products")
+        var request = new RestRequest("products/all")
         {
             Method = Method.Get
         };
