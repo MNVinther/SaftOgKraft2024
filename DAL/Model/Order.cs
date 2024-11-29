@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Model;
 
 namespace DAL.Model;
 public class Order
@@ -12,7 +13,11 @@ public class Order
     public required int CustomerId { get; set; }
     public required decimal TotalAmount { get; set; }
     public required string Status { get; set; }
-    public List<OrcerLines> OrderLines { get; set; }
+
+    public byte [] Version {  get; set; } 
+    public List<OrderLine> OrderLines { get; set; }
+
+
 
 }
 
