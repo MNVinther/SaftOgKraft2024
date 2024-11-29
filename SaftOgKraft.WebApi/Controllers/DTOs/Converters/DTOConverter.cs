@@ -37,17 +37,53 @@ public static class DTOConverter
     #endregion
 
     #region Order Conversion
-
-    public static TTarget ConvertTo<TSource, TTarget>(this TSource dtoToConvert) where TTarget : new()
+    public static OrderDTO ToDto(this Order orderToConvert)
     {
-        if (dtoToConvert ==  null)
-        {
-            throw new ArgumentNullException(nameof(dtoToConvert));
-        }
-
-        TTarget target = new TTarget();
-        dtoToConvert.CopyPropertiesTo(target);
-        return target;
+        var orderDto = new OrderDTO();
+        orderToConvert.CopyPropertiesTo(orderDto);
+        return orderDto;
     }
+
+    public static Order FromDto(this OrderDTO orderDtoToConvert)
+    {
+        Order order = new Order();
+        orderDtoToConvert.CopyPropertiesTo(order);
+        return order;
+    }
+
+    public static IEnumerable<OrderDTO> ToDtos(this IEnumerable<Order> ordersToConvert)
+    {
+        foreach (var order in ordersToConvert)
+        {
+            yield return order.ToDto();
+        }
+    }
+
+    public static IEnumerable<Order> FromDtos(this IEnumerable<OrderDTO> orderDtosToConvert)
+    {
+        foreach (var orderDto in orderDtosToConvert)
+        {
+            yield return orderDto.FromDto();
+        }
+    }
+
+
+
     #endregion
 }
+
+
+#region Generics attempt graveyard
+//public static TTarget ConvertTo<TSource, TTarget>(this TSource dtoToConvert) where TTarget : new()
+//{
+//    if (dtoToConvert ==  null)
+//    {
+//        throw new ArgumentNullException(nameof(dtoToConvert));
+//    }
+
+//    TTarget target = new TTarget();
+//    dtoToConvert.CopyPropertiesTo(target);
+//    return target;
+//}
+
+#endregion

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ProductDto>
+﻿@using SaftOgKraft.WebSite.ApiClient.DTOs
+@model IEnumerable<ProductDto>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -23,7 +24,9 @@
                          <br />
                          <p>Price: $@item.Price</p>
                          <br />
+                         <div class="cart-btn">
                          <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = item.Id, quantity = 1 })">Add To Cart</a>
+                         </div>
                      </div>
                   }
                 </div>   

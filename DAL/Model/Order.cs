@@ -9,15 +9,11 @@ namespace DAL.Model;
 public class Order
 {
     public int OrderId { get; set; }
-    public required DateTime OrderDate { get; set; }
-    public required int CustomerId { get; set; }
-    public required decimal TotalAmount { get; set; }
-    public required string Status { get; set; }
-
-    public byte [] Version {  get; set; } 
+    public DateTime OrderDate { get; set; }
+    public int CustomerId { get; set; }
+    public decimal TotalAmount { get; set; }
+    public string? Status { get; set; }
+    public byte [] Version {  get; set; }
     public List<OrderLine> OrderLines { get; set; }
-
-
-
 }
 

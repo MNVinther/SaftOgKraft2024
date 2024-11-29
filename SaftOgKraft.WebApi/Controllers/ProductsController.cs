@@ -16,18 +16,45 @@ public class ProductsController : ControllerBase
 
     public ProductsController(IProductDAO productsDAO) => _productsDAO = productsDAO;
 
+        // GET: api/ProductsController
+        [HttpGet("sorted")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetSortedProducts(string sortOrder = "")
+        {
+            var products = await _productsDAO.GetAllAsync();
+
+                products = sortOrder.ToLower() switch
+                {
+                    "asc" => products.OrderBy(p => p.Price),
+                    "desc" => products.OrderByDescending(p => p.Price),
+                    _ => products
+                };
+            
+            return Ok(products.ToDtos());
+        }
+
+        // GET: api/ProductsController
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
+        {
+            var products = await _productsDAO.GetAllAsync();
+            return Ok(products.ToDtos());
+        }
+        
     // GET: api/ProductsController>
     [HttpGet("ten-latest")]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetTenlatestProducts()
     {
         IEnumerable<Product> products;
-
         products = await _productsDAO.GetTenLatestProductsAsync();
         return Ok(products.ToDtos());
     }
 
-        // GET api/<ProductsController>/5
-        [HttpGet("{id}")]
+    // GET api/<ProductsController>/5
+    //[HttpGet("{id}")]
+    //public async Task<ActionResult<Product>> GetProductByIdAsync(int id) => Ok(await _productsDAO.GetProductByIdAsync(id));
+
+    // GET api/<ProductsController>/5
+    [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
         {
             try
@@ -51,17 +78,13 @@ public class ProductsController : ControllerBase
             }
         }
 
-    // GET: api/ProductsController
-    [HttpGet]
-    public ActionResult<IEnumerable<ProductDTO>> Get() => Ok(_productsDAO.GetAllAsync());
+ 
+   
     
-    // GET api/<ProductsController>/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> Get(int id) => Ok(await _productsDAO.GetAsync(id));
 
     // POST api/<ProductsController>
     [HttpPost]
-    public Task<int> Post([FromBody] Product product) => _productsDAO.InsertAsync(product);
+    public async Task<int> Post([FromBody] Product product) => await _productsDAO.InsertAsync(product);
 
 
 }

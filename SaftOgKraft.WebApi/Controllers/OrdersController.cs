@@ -1,6 +1,7 @@
 ﻿using DAL.DAO;
 using Microsoft.AspNetCore.Mvc;
 using SaftOgKraft.WebApi.Controllers.DTOs;
+using SaftOgKraft.WebApi.Controllers.DTOs.Converters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
