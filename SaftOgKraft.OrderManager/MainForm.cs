@@ -41,7 +41,7 @@ public partial class MainForm : Form
 
 
         // Set the API base URL
-        string baseApiUrl = "http://your-api-url/";
+        string baseApiUrl = "https://localhost:7106/api/v1/";
         _orderRestClient = new OrderRestClient(baseApiUrl);
     }
 
@@ -80,18 +80,6 @@ public partial class MainForm : Form
         // LoadDummyOrders for testing 
         await LoadDummyOrdersAsync();
 
-        // Add a Status column to dataGridOrders if it doesn't exist
-        if (!dataGridOrders.Columns.Contains("Status"))
-        {
-            var statusColumn = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Status",
-                Name = "Status",
-                ReadOnly = true,
-                Width = 100
-            };
-            dataGridOrders.Columns.Add(statusColumn);
-        }
         // Set all other columns to read-only
         foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
         {
@@ -148,6 +136,7 @@ public partial class MainForm : Form
         // LoadDummyOrders for testing 
         await LoadDummyOrderLinesAsync(orderId);
 
+
         // Set the value of "Packed" checkbox based on cached data
         foreach (var orderLine in _orderLinesCache)
         {
@@ -159,6 +148,7 @@ public partial class MainForm : Form
                 dataGridOrderLines.Rows[rowIndex.Value].Cells["Packed"].Value = orderLine.Packed;
             }
         }
+
 
         // Set all other columns to read-only
         foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
