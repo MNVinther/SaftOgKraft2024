@@ -33,7 +33,7 @@ public class ProductsController : ControllerBase
         }
 
         // GET: api/ProductsController
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             var products = await _productsDAO.GetAllAsync();
@@ -78,10 +78,8 @@ public class ProductsController : ControllerBase
             }
         }
 
-    // GET: api/ProductsController
-    [HttpGet]
-    public ActionResult<IEnumerable<ProductDTO>> Get() => Ok(_productsDAO.GetAllAsync());
-    
+ 
+   
     
 
     // POST api/<ProductsController>
