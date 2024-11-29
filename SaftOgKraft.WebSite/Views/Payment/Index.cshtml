@@ -1,0 +1,40 @@
+﻿@model SaftOgKraft.WebSite.Models.Cart
+@{
+    
+    ViewData["Title"] = "Payment";
+}
+
+<h1>Payment</h1>
+@if (Model == null || Model.ProductQuantities.Count == 0)
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Cart is empty</h3>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var keyvalue in Model.ProductQuantities)
+        {
+            <div class="row" style="padding-top:2px;">
+                <div class="col-6">
+                    @{
+                        ProductQuantity productQuantity = @keyvalue.Value;
+                    }
+                    @productQuantity.Quantity @(productQuantity.ProductName)(s)
+                    at $@productQuantity.Price each
+                </div>
+                <div class="col-3">
+                    total $@productQuantity.GetTotalPrice()
+                </div>
+                </div>
+        }
+    }
+<p></p>
+<h3 class="display-6">Total: $@Model.GetTotal()</h3>
+
+<form method="post" asp-controller="Payment" asp-action="Pay">
+    <button type="submit" class="btn btn-success">Pay</button>
+</form>
+}
