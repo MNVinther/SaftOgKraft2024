@@ -41,4 +41,8 @@
     <p></p>
     <h3 class="display-6">Total: $@Model.GetTotal()</h3>
     <a class="btn btn-danger" href="@Url.Action("EmptyCart", "Cart")">Empty entire cart <span class="bi bi-trash"></span></a>
+
+    <form method="get" asp-controller="Payment" asp-action="Index">
+        <button type="submit" class="btn btn-primary">Continue to payment</button>
+    </form>
 </div>
