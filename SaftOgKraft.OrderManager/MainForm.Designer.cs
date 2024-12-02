@@ -129,8 +129,6 @@ partial class MainForm
 
     private void back_Click(object sender, EventArgs e)
     {
-        //   •	Skifte tilbage fra dataGridOrderLines til dataGridOrders.
-        //•	Skjule tilbage-knappen.
         dataGridOrderLines.Visible = false;
         btnBack.Visible = false;
         dataGridOrders.Visible = true;
