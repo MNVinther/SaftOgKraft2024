@@ -32,6 +32,77 @@ public class OrderDAO : BaseDAO, IOrderDAO
             throw new Exception($"Error inserting new order: '{ex.Message}'.", ex);
         }
     }
+    // This async method CreateOrder is used for creating an order for the sale on the website.
+    // We do so by first checking if we have the requested products in stock. 
+    // Then If we have the products we insert an order in DB.
+    // Thereafter we insert OrderLines into DB
+    // if any of these fails we rollback
+    public async Task<Order> CreateOrder(Order entity)
+    {
+        IDbConnection connection = CreateConnection();
+        connection.Open();
+        using IDbTransaction transaction = connection.BeginTransaction();
+
+        try
+        {
+            // Step 1: here we check if there is enough products available
+            // and sets a new stock when we have subtracted the amounts needed in the order 
+            foreach (var orderLine in entity.OrderLines)
+            {
+                string updateStockSql = @"
+                UPDATE Product
+                SET Stock = Stock - @Quantity, Version = NEWID()
+                WHERE ProductId = @ProductId AND Stock >= @Quantity AND Version = @ProductRowVersion;
+                
+                IF (@@ROWCOUNT <= 0)
+                    THROW 'Out of stock !';";
+
+                await connection.ExecuteAsync(updateStockSql, new
+                {
+                    ProductId = orderLine.ProductId,
+                    Quantity = orderLine.Quantity,
+                    ProductRowVersion = orderLine.ProductRowVersion
+                }, transaction);
+            }
+
+            // Step 2: Here we define how an order is inserted into DB
+            string insertOrderSql = @"
+            INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount, Status)
+            OUTPUT INSERTED.OrderId, INSERTED.Version
+            VALUES (@OrderDate, @CustomerId, @TotalAmount, @Status);"; // Status is pending as deafault in DB
+
+            var orderResult = await connection.QuerySingleAsync<(int OrderId, byte[] Version)>(insertOrderSql, entity, transaction);
+            entity.OrderId = orderResult.OrderId;
+            entity.Version = orderResult.Version;
+
+            // Step 3: Here we insert orderlines into DB
+            string insertOrderLineSql = @"
+            INSERT INTO Orderlines (OrderId, ProductId, Quantity, Price)
+            VALUES (@OrderId, @ProductId, @Quantity, @Price);";
+
+            foreach (OrderLine orderLine in entity.OrderLines)
+            {
+                await connection.ExecuteAsync(insertOrderLineSql, new
+                {
+                    OrderId = entity.OrderId, 
+                    ProductId = orderLine.ProductId,
+                    Quantity = orderLine.Quantity,
+                    Price = orderLine.UnitPrice,
+                }, transaction);
+            }
+
+           
+            transaction.Commit();
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            throw new DataException ("Error creating order", ex); 
+        }
+    }
+
     #endregion
 }
 
