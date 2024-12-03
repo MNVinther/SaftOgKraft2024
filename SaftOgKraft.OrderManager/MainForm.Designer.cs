@@ -60,7 +60,7 @@ partial class MainForm
         btnOrders.TabIndex = 0;
         btnOrders.Text = "Ordre";
         btnOrders.UseVisualStyleBackColor = true;
-        btnOrders.Click += btnOrders_Click;
+        btnOrders.Click += BtnOrders_Click;
         // 
         // panelContent
         // 
@@ -91,7 +91,6 @@ partial class MainForm
         dataGridOrderLines.Dock = DockStyle.Fill;
         dataGridOrderLines.Location = new Point(0, 0);
         dataGridOrderLines.Name = "dataGridOrderLines";
-        dataGridOrderLines.ReadOnly = false;
         dataGridOrderLines.RowHeadersWidth = 82;
         dataGridOrderLines.Size = new Size(974, 579);
         dataGridOrderLines.TabIndex = 1;
@@ -107,7 +106,7 @@ partial class MainForm
         dataGridOrders.Size = new Size(974, 579);
         dataGridOrders.TabIndex = 0;
         dataGridOrders.Visible = false;
-        dataGridOrders.CellClick += dataGridOrders_CellClick;
+        dataGridOrders.CellClick += DataGridOrders_CellClick;
         // 
         // MainForm
         // 

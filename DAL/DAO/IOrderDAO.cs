@@ -12,4 +12,8 @@ public interface IOrderDAO
     //Task<Order> GetOrderByIdAsync(int id);
     Task<int> InsertOrderAsync(Order entity);
     Task<Order> CreateOrder(Order entity);
+    Task<IEnumerable<Order>> GetAllOrdersAsync();
+    Task<IEnumerable<OrderLine>> GetOrderLinesAsync(int orderId);
+
+
 }
