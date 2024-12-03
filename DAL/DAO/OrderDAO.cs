@@ -39,7 +39,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
     // Then If we have the products we insert an order in DB.
     // Thereafter we insert OrderLines into DB
     // if any of these fails we rollback
-    public async Task<Order> CreateOrder(Order entity)
+    public async Task<Order> CreateOrderAsync(Order entity)
     {
         IDbConnection connection = CreateConnection();
         connection.Open();
@@ -54,7 +54,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
                 string updateStockSql = @"
                 UPDATE Product
                 SET Stock = Stock - @Quantity, Version = NEWID()
-                WHERE ProductId = @ProductId AND Stock >= @Quantity AND Version = @ProductRowVersion;
+                WHERE ProductId = @ProductId AND Stock >= @Quantity;
                 
                 IF (@@ROWCOUNT = 0)
                     THROW 50000, 'Not enough stock available or stock has been modified', 1;";
@@ -63,15 +63,14 @@ public class OrderDAO : BaseDAO, IOrderDAO
                 {
                     ProductId = orderLine.ProductId,
                     Quantity = orderLine.Quantity,
-                    ProductRowVersion = orderLine.ProductRowVersion
                 }, transaction);
             }
 
             // Step 2: Here we handle how to insert an order into DB
             string insertOrderSql = @"
-            INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount, Status)
+            INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount)
             OUTPUT INSERTED.OrderId, INSERTED.Version
-            VALUES (@OrderDate, @CustomerId, @TotalAmount, @Status);"; // Status is pending as deafault in DB
+            VALUES (@OrderDate, @CustomerId, @TotalAmount);"; // Status is pending as deafault in DB
 
             var orderResult = await connection.QuerySingleAsync<(int OrderId, byte[] Version)>(insertOrderSql, entity, transaction);
             entity.OrderId = orderResult.OrderId;
@@ -100,6 +99,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Error during order creation: {ex.Message}");
+            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             transaction.Rollback();
             throw new DataException ("Error creating order", ex); 
         }
