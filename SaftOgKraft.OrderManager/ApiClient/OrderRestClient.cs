@@ -47,8 +47,7 @@ public class OrderRestClient : IOrderRestClient
     public async Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
     {
         // Create a GET request for the orderLines
-        var request = new RestRequest($"orders/{orderId}/lines");
-        request.Method = Method.Get;
+        var request = new RestRequest($"orders/{orderId}/lines", Method.Get);
 
         // Execute the request and recive a collection OrderLineDto
         var response = await _restClient.ExecuteAsync<IEnumerable<OrderLineDto>>(request);
@@ -58,8 +57,14 @@ public class OrderRestClient : IOrderRestClient
             // Handle failure by throwing an exception
             throw new Exception($"Error fetching order lines for order ID {orderId}: {response.Content}");
         }
-        return response.Data ?? Enumerable.Empty<OrderLineDto>();
+        return response.Data ?? [];
     }
+
+    //public Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
+    //{
+    //    var filteredOrderLines = _orderLines.Where(line => line.OrderId == orderId).ToList();
+    //    return Task.FromResult<IEnumerable<OrderLineDto>>(filteredOrderLines);
+    //}
 
     public Task<OrderDto> GetOrderByIdAsync(int id)
     {

@@ -41,7 +41,7 @@ public partial class MainForm : Form
 
 
         // Set the API base URL
-        string baseApiUrl = "http://localhost:7106/api/v1/";
+        string baseApiUrl = "https://localhost:7106/api/v1/";
         _orderRestClient = new OrderRestClient(baseApiUrl);
     }
 
