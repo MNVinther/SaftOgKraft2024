@@ -44,6 +44,7 @@ public static class DTOConverter
         return orderDto;
     }
 
+
     public static Order FromDto(this OrderDTO orderDtoToConvert)
     {
         Order order = new Order();
@@ -69,6 +70,39 @@ public static class DTOConverter
 
 
 
+
+    #endregion
+
+    #region OrderLine Conversion
+    public static OrderLineDTO ToDto(this OrderLine orderLineToConvert)
+    {
+        var orderLineDto = new OrderLineDTO();
+        orderLineToConvert.CopyPropertiesTo(orderLineDto);
+        return orderLineDto;
+    }
+
+    public static OrderLine FromDto(this OrderLineDTO orderLineDtoToConvert)
+    {
+        OrderLine orderLine = new OrderLine();
+        orderLineDtoToConvert.CopyPropertiesTo(orderLine);
+        return orderLine;
+    }
+
+    public static IEnumerable<OrderLineDTO> ToDtos(this IEnumerable<OrderLine> orderLinesToConvert)
+    {
+        foreach (var orderLine in orderLinesToConvert)
+        {
+            yield return orderLine.ToDto();
+        }
+    }
+
+    public static IEnumerable<OrderLine> FromDtos(this IEnumerable<OrderLineDTO> orderLineDtosToConvert)
+    {
+        foreach (var orderLineDto in orderLineDtosToConvert)
+        {
+            yield return orderLineDto.FromDto();
+        }
+    }
     #endregion
 }
 
