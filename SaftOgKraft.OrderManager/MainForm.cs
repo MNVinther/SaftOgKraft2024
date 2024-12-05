@@ -60,6 +60,12 @@ public partial class MainForm : Form
         // Events for handling cell value and state changes
         dataGridOrderLines.CellValueChanged += DataGridOrderLines_CellValueChanged;
         dataGridOrderLines.CurrentCellDirtyStateChanged += DataGridOrderLines_CurrentCellDirtyStateChanged;
+
+        // Responsive window size
+        //int minimumWidth = panelNavigation.Width + panelContent.PreferredSize.Width;
+        //int minimumHeight = Math.Max(panelNavigation.Height, panelContent.PreferredSize.Height);
+        //this.MinimumSize = new Size(minimumWidth, minimumHeight);
+        //this.Size = new Size(minimumWidth, minimumHeight);
     }
 
     // Handles the Orders button event - slettet async
@@ -306,6 +312,11 @@ public partial class MainForm : Form
                 break;
             }
         }
+    }
+
+    private void dataGridOrderLines_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+
     }
 
     //private void DataGridOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)

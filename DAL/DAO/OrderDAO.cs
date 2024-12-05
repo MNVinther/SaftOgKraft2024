@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Model;
 using Dapper;
-using System.Data;
 
 namespace DAL.DAO;
 public class OrderDAO : BaseDAO, IOrderDAO
@@ -135,6 +134,20 @@ public class OrderDAO : BaseDAO, IOrderDAO
             throw new Exception($"Error fetching order lines for order ID {orderId}: {ex.Message}", ex);
         }
     }
+
+    //public async Task<Order> GetOrderByIdAsync(int orderId)
+    //{
+    //    try
+    //    {
+    //        var query = "SELECT * FROM [dbo].[Order] WHERE OrderId = @orderId";
+    //        using var connection = CreateConnection();
+    //        return (await connection.QueryAsync<Order>(query, new { OrderId = orderId })).ToList();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception($"Error fetching all orders: {ex.Message}", ex);
+    //    }
+    //}
 
 
 
