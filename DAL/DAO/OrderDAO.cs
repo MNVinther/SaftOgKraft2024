@@ -40,68 +40,63 @@ public class OrderDAO : BaseDAO, IOrderDAO
     // if any of these fails we rollback
     public async Task<Order> CreateOrderAsync(Order entity)
     {
-        IDbConnection connection = CreateConnection();
+        using var connection = CreateConnection();
         connection.Open();
-        using IDbTransaction transaction = connection.BeginTransaction();
+        using var transaction = connection.BeginTransaction();
 
         try
         {
-            // Step 1: here we check if there is enough products available
-            // and sets a new stock when we have subtracted the amounts needed in the order 
-            foreach (var orderLine in entity.OrderLines)
-            {
-                string updateStockSql = @"
-                UPDATE Product
-                SET Stock = Stock - @Quantity, Version = NEWID()
-                WHERE ProductId = @ProductId AND Stock >= @Quantity;
-                
-                IF (@@ROWCOUNT = 0)
-                    THROW 50000, 'Not enough stock available or stock has been modified', 1;";
-
-                await connection.ExecuteAsync(updateStockSql, new
-                {
-                    ProductId = orderLine.ProductId,
-                    Quantity = orderLine.Quantity,
-                }, transaction);
-            }
-
-            // Step 2: Here we handle how to insert an order into DB
+            // Step 1: Insert Order
             string insertOrderSql = @"
-            INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount)
-            OUTPUT INSERTED.OrderId, INSERTED.Version
-            VALUES (@OrderDate, @CustomerId, @TotalAmount);"; // Status is pending as deafault in DB
+        INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount)
+        OUTPUT INSERTED.OrderId, INSERTED.Version
+        VALUES (@OrderDate, @CustomerId, @TotalAmount);";
 
             var orderResult = await connection.QuerySingleAsync<(int OrderId, byte[] Version)>(insertOrderSql, entity, transaction);
             entity.OrderId = orderResult.OrderId;
             entity.Version = orderResult.Version;
 
-            // Step 3: Insert OrderLines
+            // Step 2: Insert OrderLines
             string insertOrderLineSql = @"
-            INSERT INTO OrderLine (OrderId, ProductId, Quantity, UnitPrice)
-            VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
+        INSERT INTO OrderLine (OrderId, ProductId, Quantity, UnitPrice)
+        VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
 
-            foreach (OrderLine orderLine in entity.OrderLines)
+            foreach (var orderLine in entity.OrderLines)
             {
+                // Insert the OrderLine
                 await connection.ExecuteAsync(insertOrderLineSql, new
                 {
-                    OrderId = entity.OrderId, 
+                    OrderId = entity.OrderId,
                     ProductId = orderLine.ProductId,
                     Quantity = orderLine.Quantity,
-                    Price = orderLine.UnitPrice,
+                    UnitPrice = orderLine.UnitPrice
+                }, transaction);
+
+                // Step 3: Deduct Stock for the Product
+                string updateProductStockSql = @"
+            UPDATE Product
+            SET Stock = Stock - @Quantity
+            WHERE ProductId = @ProductId AND Stock >= @Quantity;
+
+            IF (@@ROWCOUNT = 0)
+                THROW 50000, 'Not enough stock available or stock has been modified.', 1;";
+
+                await connection.ExecuteAsync(updateProductStockSql, new
+                {
+                    ProductId = orderLine.ProductId,
+                    Quantity = orderLine.Quantity
                 }, transaction);
             }
 
-           
+            // Commit transaction
             transaction.Commit();
-
             return entity;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during order creation: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            // Rollback transaction in case of error
             transaction.Rollback();
-            throw new DataException ("Error creating order", ex); 
+            throw new DataException("Error creating order and updating stock", ex);
         }
     }
 

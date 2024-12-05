@@ -39,10 +39,13 @@ public static class DTOConverter
     #region Order Conversion
     public static OrderDTO ToDto(this Order orderToConvert)
     {
-        var orderDto = new OrderDTO();
+        OrderDTO orderDto = new OrderDTO();
         orderToConvert.CopyPropertiesTo(orderDto);
-        return orderDto;
 
+        // Explicitly map OrderLines
+        orderDto.OrderLines = orderToConvert.OrderLines?.Select(ol => ol.ToDto()).ToList();
+
+        return orderDto;
     }
 
 
@@ -50,6 +53,10 @@ public static class DTOConverter
     {
         Order order = new Order();
         orderDtoToConvert.CopyPropertiesTo(order);
+
+        // Explicitly map OrderLines
+        order.OrderLines = orderDtoToConvert.OrderLines?.Select(olDto => olDto.FromDto()).ToList();
+
         return order;
     }
 
@@ -82,11 +89,14 @@ public static class DTOConverter
         return orderLineDto;
     }
 
-    public static OrderLine FromDto(this OrderLineDTO orderLineDtoToConvert)
+    public static OrderLine FromDto(this OrderLineDTO dto)
     {
-        OrderLine orderLine = new OrderLine();
-        orderLineDtoToConvert.CopyPropertiesTo(orderLine);
-        return orderLine;
+        return new OrderLine
+        {
+            ProductId = dto.ProductId,
+            Quantity = dto.Quantity,
+            UnitPrice = dto.UnitPrice
+        };
     }
 
     public static IEnumerable<OrderLineDTO> ToDtos(this IEnumerable<OrderLine> orderLinesToConvert)
