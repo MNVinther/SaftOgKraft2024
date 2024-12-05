@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Model;
 using Dapper;
-using System.Data;
 
 namespace DAL.DAO;
 public class OrderDAO : BaseDAO, IOrderDAO
@@ -105,6 +104,53 @@ public class OrderDAO : BaseDAO, IOrderDAO
             throw new DataException ("Error creating order", ex); 
         }
     }
+
+    // This method retrieves all orders from the database
+
+    public async Task<IEnumerable<Order>> GetAllOrdersAsync()
+    {
+        try
+        {
+            var query = "SELECT * FROM [dbo].[Order]";
+            using var connection = CreateConnection();
+            return (await connection.QueryAsync<Order>(query)).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error fetching all orders: {ex.Message}", ex);
+        }
+    }
+
+    // This method retrieves all order lines associated with a specific order ID from the database
+    public async Task<IEnumerable<OrderLine>> GetOrderLinesAsync(int orderId)
+    {
+        try
+        {
+            var query = "SELECT ol.* FROM [dbo].[OrderLine] ol INNER JOIN [dbo].[Order] o ON ol.OrderId = o.OrderId WHERE ol.OrderId = @OrderId";
+            using var connection = CreateConnection();
+            return (await connection.QueryAsync<OrderLine>(query, new { OrderId = orderId })).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error fetching order lines for order ID {orderId}: {ex.Message}", ex);
+        }
+    }
+
+    //public async Task<Order> GetOrderByIdAsync(int orderId)
+    //{
+    //    try
+    //    {
+    //        var query = "SELECT * FROM [dbo].[Order] WHERE OrderId = @orderId";
+    //        using var connection = CreateConnection();
+    //        return (await connection.QueryAsync<Order>(query, new { OrderId = orderId })).ToList();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception($"Error fetching all orders: {ex.Message}", ex);
+    //    }
+    //}
+
+
 
     #endregion
 }

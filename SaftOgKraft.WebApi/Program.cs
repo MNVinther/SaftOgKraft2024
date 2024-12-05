@@ -18,7 +18,6 @@ namespace SaftOgKraft.WebApi
             const string connectionString = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S231_10503093;User ID=DMA-CSD-S231_10503093;Password=Password1!;TrustServerCertificate=True;";
             builder.Services.AddSingleton<IProductDAO>((_) => new ProductDAO(connectionString));
             builder.Services.AddSingleton<IOrderDAO>((_) => new OrderDAO(connectionString));
-            //builder.Services.AddSingleton<INogetAndetDAO>((_) => new NogetAndetDAO(connectionString));
 
             var app = builder.Build();
 

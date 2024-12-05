@@ -15,21 +15,38 @@ public class OrdersController : ControllerBase
     public OrdersController(IOrderDAO orderDAO) => _orderDAO = orderDAO;
 
     // GET: api/<OrdersController>
-    [HttpGet]
-    public IEnumerable<string> Get()
+    [HttpGet("all")]
+    public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersAsync()
     {
-        return ["value1", "value2"];
+        try
+        {
+            var orders = await _orderDAO.GetAllOrdersAsync();
+            return Ok(orders.ToDtos());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching orders: {ex.Message}");
+        }
     }
 
-    // GET api/<OrdersController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
+    // GET api/<OrdersController>/5/lines
+    [HttpGet("{orderId}/lines")]
+    public async Task<ActionResult<IEnumerable<OrderLineDTO>>> GetOrderLinesAsync(int orderId)
     {
-        return "value";
+        try
+        {
+            var orderLines = await _orderDAO.GetOrderLinesAsync(orderId);
+            return Ok(orderLines.ToDtos());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching order lines for Order ID {orderId}: {ex.Message}");
+        }
     }
 
     // POST api/<OrdersController>
     [HttpPost("create")]
+
     public async Task<ActionResult<int>> Post([FromBody] OrderDTO orderDTO)
     {
         return Ok(await _orderDAO.CreateOrderAsync(orderDTO.FromDto()));

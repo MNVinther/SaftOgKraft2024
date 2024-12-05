@@ -9,17 +9,28 @@ using DAL.Model;
 using DAL.DAO;
 using System.Data;
 
-//public class ProductDaoTests
-//{
-//    ProductDAO _productDAO;
+public class ProductDAOTest
+{
+    private readonly string _connectionstring = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S231_10503093;User ID=DMA-CSD-S231_10503093;Password=Password1!;TrustServerCertificate=True;";
 
-//    [SetUp]
-//    public void SetUp()
-//    {
-//        _productDAO = new ProductDAO("Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S231_10503093;User ID=DMA-CSD-S231_10503093;Password=Password1!;TrustServerCertificate=True;");
-//    }
-    
-//    [Test]
-    
-   
-//}
+    [Test]
+    public async Task GetTenLatestProductsTest()
+    {
+        //Arrange
+        var _productDAO = new ProductDAO(_connectionstring);
+        //Act
+        var products = (await _productDAO.GetTenLatestProductsAsync()).ToList();
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(products, Is.Not.Null);
+            Assert.That(products.Count, Is.EqualTo(10));
+            Assert.That(products, Is.Ordered.Descending.By(nameof(Product.Id)));
+        });
+
+    }
+
+
+
+
+}

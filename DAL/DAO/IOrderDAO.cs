@@ -8,8 +8,9 @@ using DAL.Model;
 namespace DAL.DAO;
 public interface IOrderDAO
 {
-    //Task<IEnumerable<Order>> GetAllOrdersAsync();
-    //Task<Order> GetOrderByIdAsync(int id);
+    Task<IEnumerable<Order>> GetAllOrdersAsync();
+    //Task<Order> GetOrderByIdAsync(int orderId);
     Task<int> InsertOrderAsync(Order entity);
     Task<Order> CreateOrderAsync(Order entity);
+    Task<IEnumerable<OrderLine>> GetOrderLinesAsync(int orderId);
 }
