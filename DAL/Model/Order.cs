@@ -14,11 +14,7 @@ public class Order
     public decimal TotalAmount { get; set; }
     public string? Status { get; set; }
     public byte [] Version {  get; set; }
-    public List<OrderLine> OrderLines { get; set; }
+    public List<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
 
-    public Order()
-    {
-        OrderLines = new List<OrderLine>();
-    }
 }
 

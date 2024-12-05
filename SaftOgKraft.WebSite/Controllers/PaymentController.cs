@@ -52,7 +52,7 @@ public class PaymentController : Controller
             {
                 ProductId = pq.Key, // Use the productId from the dictionary key
                 Quantity = pq.Value.Quantity,
-                UnitPrice = pq.Value.GetTotalPrice() / pq.Value.Quantity // Assuming GetTotalPrice() gives total price for the quantity
+                UnitPrice = pq.Value.GetTotalPrice() / pq.Value.Quantity 
             }).ToList()
         };
 
@@ -62,7 +62,7 @@ public class PaymentController : Controller
             var createdOrder = await _restClient.CreateOrderAsync(orderDto);
 
             // Clear the cart after the order is created (optional)
-            ClearCart(); // Assuming you have a method for this
+            ClearCart(); 
 
             // Redirect to the confirmation page, passing the OrderId
             return RedirectToAction("Confirmation", new { orderId = createdOrder.OrderId });

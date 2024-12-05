@@ -50,8 +50,28 @@ public static class DTOConverter
     {
         Order order = new Order();
         orderDtoToConvert.CopyPropertiesTo(order);
+        foreach (OrderLineDTO orderLineDTO in orderDtoToConvert.OrderLines)
+        {
+            order.;
+            
+        }
         return order;
     }
+    //public static Order FromDto(this OrderDTO dto)
+    //{
+    //    return new Order
+    //    {
+    //        CustomerId = dto.CustomerId,
+    //        OrderDate = dto.OrderDate,
+    //        TotalAmount = dto.TotalAmount,
+    //        OrderLines = dto.OrderLines.Select(ol => new OrderLine
+    //        {
+    //            ProductId = ol.ProductId,
+    //            Quantity = ol.Quantity,
+    //            UnitPrice = ol.UnitPrice
+    //        }).ToList()
+    //    };
+    //}
 
     public static IEnumerable<OrderDTO> ToDtos(this IEnumerable<Order> ordersToConvert)
     {
