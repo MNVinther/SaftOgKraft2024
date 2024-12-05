@@ -78,8 +78,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
             // Step 3: Insert OrderLines
             string insertOrderLineSql = @"
-            INSERT INTO Orderlines (OrderId, ProductId, Quantity, Price)
-            VALUES (@OrderId, @ProductId, @Quantity, @Price);";
+            INSERT INTO OrderLine (OrderId, ProductId, Quantity, UnitPrice)
+            VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
 
             foreach (OrderLine orderLine in entity.OrderLines)
             {
