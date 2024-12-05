@@ -31,7 +31,7 @@ public class OrdersController : ControllerBase
 
     // GET api/<OrdersController>/5/lines
     [HttpGet("{orderId}/lines")]
-    public async Task<ActionResult<IEnumerable<OrderDAO>>> GetOrderLinesAsync(int orderId)
+    public async Task<ActionResult<IEnumerable<OrderLineDTO>>> GetOrderLinesAsync(int orderId)
     {
         try
         {
