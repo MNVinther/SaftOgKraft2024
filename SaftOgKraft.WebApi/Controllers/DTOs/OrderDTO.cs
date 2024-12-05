@@ -11,6 +11,6 @@ public class OrderDTO
     public decimal TotalAmount { get; set; }
     public string? Status { get; set; }
     public byte[] Version { get; set; }
-    public List<OrderLine> OrderLines { get; set; }
+    public List<OrderLineDTO> OrderLines { get; set; }
 
 }

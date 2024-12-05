@@ -44,12 +44,12 @@ public class OrdersController : ControllerBase
         }
     }
 
+    // POST api/<OrdersController>
+    [HttpPost("create")]
 
-// POST api/<OrdersController>
-[HttpPost]
     public async Task<ActionResult<int>> Post([FromBody] OrderDTO orderDTO)
     {
-        return Ok(await _orderDAO.InsertOrderAsync(orderDTO.FromDto()));
+        return Ok(await _orderDAO.CreateOrderAsync(orderDTO.FromDto()));
     }
 
     // PUT api/<OrdersController>/5

@@ -24,6 +24,11 @@ namespace SaftOgKraft.WebSite.ApiClient
             new ProductDto() { Id = 10, Name = "10Saft", Price = 9, Description = "Grøn smoothie" },
         };
 
+        public Task<OrderDto> CreateOrderAsync(OrderDto order)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int> CreateProductAsync(ProductDto entity)
         {
             throw new NotImplementedException();
