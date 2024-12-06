@@ -9,7 +9,7 @@ public class OrderDTO
     public DateTime OrderDate { get; set; }
     public int CustomerId { get; set; }
     public decimal TotalAmount { get; set; }
-    public string? Status { get; set; }
+    public string Status { get; set; }
     public byte[] Version { get; set; }
     public List<OrderLine> OrderLines { get; set; }
 

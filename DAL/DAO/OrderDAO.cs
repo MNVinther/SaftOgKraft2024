@@ -23,7 +23,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
             var query =
                 "INSERT INTO Order (OrderId, OrderDate, CustomerId, TotalAmount, Status) " +
                 "OUTPUT INSERTED.Id " +
-                "VALUES (@OrderId, @OrderDate, @CustomerId, @TotalAmount, @Status";
+                "VALUES (@OrderId, @OrderDate, @CustomerId, @TotalAmount, @Status)";
             using var connection = CreateConnection();
             return await connection.QuerySingleAsync<int>(query, entity);
 
@@ -125,7 +125,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
     {
         try
         {
-            var query = "SELECT ol.* FROM [dbo].[OrderLine] ol INNER JOIN [dbo].[Order] o ON ol.OrderId = o.OrderId WHERE ol.OrderId = @OrderId";
+            var query = "SELECT ol.OrderLineId, ol.OrderId, ol.Quantity, ol.UnitPrice, p.ProductId, p.ProductName FROM [dbo].[OrderLine] ol INNER JOIN [dbo].[Product] p ON ol.ProductId = p.ProductId INNER JOIN [dbo].[Order] o ON ol.OrderId = o.OrderId WHERE ol.OrderId = @OrderId;";
             using var connection = CreateConnection();
             return (await connection.QueryAsync<OrderLine>(query, new { OrderId = orderId })).ToList();
         }
@@ -134,6 +134,24 @@ public class OrderDAO : BaseDAO, IOrderDAO
             throw new Exception($"Error fetching order lines for order ID {orderId}: {ex.Message}", ex);
         }
     }
+
+    public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
+    {
+        try
+        {
+            var query = "UPDATE [dbo].[Order] SET Status = @Status WHERE OrderId = @OrderId";
+            using var connection = CreateConnection();
+            var result = await connection.ExecuteAsync(query, new { Status = status, OrderId = orderId });
+            return result > 0;
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error updating order status: {ex.Message}", ex);
+        }
+    }
+
+
 
     //public async Task<Order> GetOrderByIdAsync(int orderId)
     //{

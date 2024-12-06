@@ -13,6 +13,9 @@ public class OrderLineDto
 
     [Required]
     public required int OrderId { get; set; }
+    
+    [Required]
+    public string ProductName { get; set; }
 
     [Required]
     public required int ProductId { get; set; }

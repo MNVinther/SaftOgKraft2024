@@ -45,8 +45,8 @@ public class OrdersController : ControllerBase
     }
 
 
-// POST api/<OrdersController>
-[HttpPost]
+    // POST api/<OrdersController>
+    [HttpPost]
     public async Task<ActionResult<int>> Post([FromBody] OrderDTO orderDTO)
     {
         return Ok(await _orderDAO.InsertOrderAsync(orderDTO.FromDto()));
@@ -63,4 +63,26 @@ public class OrdersController : ControllerBase
     public void Delete(int id)
     {
     }
+
+    [HttpPut("{orderId}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] OrderDTO statusUpdate)
+    {
+        try
+        {
+            string status = statusUpdate.Status;
+            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, status);
+            if (isUpdated)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error updating order status: {ex.Message}");
+        }
+    }
 }
+
+
+
