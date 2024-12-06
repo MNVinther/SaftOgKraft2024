@@ -27,7 +27,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
     private static readonly string GetProductStockAndVersionSql =
                 @"SELECT Stock, Version " +
-                "FROM [Product]" +
+                "FROM [Product] " +
                 "WHERE ProductId = @ProductId;";
 
 
