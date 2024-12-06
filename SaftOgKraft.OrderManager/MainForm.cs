@@ -97,7 +97,10 @@ public partial class MainForm : Form
     }
 
     // Load orders from an API - slettet async og task
-    private async void LoadOrders()
+    private async 
+    // Load orders from an API - slettet async og task
+    Task
+LoadOrders()
     {
         try
         {
@@ -269,6 +272,16 @@ public partial class MainForm : Form
         }
     }
 
+    private async Task RefreshData()
+    {
+        await LoadOrders();
+
+        if (currentOrderId > 0)
+        {
+            await LoadOrderLinesAsync(currentOrderId);
+        }
+    }
+
     // Marks the current order as packed in dataGridOrders
     private async Task MarkOrderAsPackedAsync()
     {
@@ -285,6 +298,7 @@ public partial class MainForm : Form
                 if (isUpdated)
                 {
                     MessageBox.Show("Ordren er pakket og status er opdateret i databasen!", "Status");
+                    await RefreshData();
                 }
                 else
                 {

@@ -64,18 +64,20 @@ public class OrdersController : ControllerBase
     {
     }
 
+
     [HttpPut("{orderId}/status")]
-    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] OrderDTO statusUpdate)
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] string status)
     {
         try
         {
-            string status = statusUpdate.Status;
             bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, status);
+
             if (isUpdated)
             {
-                return Ok();
+                return Ok(new { Message = "Order status updated successfully." });
             }
-            return NotFound();
+
+            return NotFound(new { Message = "Order not found or status update failed." });
         }
         catch (Exception ex)
         {

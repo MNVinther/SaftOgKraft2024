@@ -66,7 +66,8 @@ public class OrderRestClient : IOrderRestClient
         var request = new RestRequest($"orders/{orderId}/status", Method.Put);
 
         // Add the status as a JSON body to the request
-        request.AddJsonBody(new { Status = status });
+        var body = new { Status = status };
+        request.AddJsonBody(status);
 
         // Execute the request and get the response
         var response = await _restClient.ExecuteAsync(request);
