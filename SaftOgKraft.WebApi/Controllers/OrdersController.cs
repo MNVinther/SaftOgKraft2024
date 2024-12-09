@@ -66,11 +66,11 @@ public class OrdersController : ControllerBase
 
 
     [HttpPut("{orderId}/status")]
-    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] string status)
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDTO statusUpdate)
     {
         try
         {
-            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, status);
+            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, statusUpdate.Status);
 
             if (isUpdated)
             {

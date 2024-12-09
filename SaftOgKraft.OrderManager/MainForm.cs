@@ -28,8 +28,7 @@ public partial class MainForm : Form
     private readonly IOrderRestClient _orderRestClient;
 
     // Cache for order lines
-   // private List<OrderLineDto> _orderLinesCache;
-
+    //private List<OrderLineDto> _orderLinesCache;
 
     public MainForm()
     {
@@ -60,16 +59,10 @@ public partial class MainForm : Form
         // Events for handling cell value and state changes
         dataGridOrderLines.CellValueChanged += DataGridOrderLines_CellValueChanged;
         dataGridOrderLines.CurrentCellDirtyStateChanged += DataGridOrderLines_CurrentCellDirtyStateChanged;
-
-        // Responsive window size
-        //int minimumWidth = panelNavigation.Width + panelContent.PreferredSize.Width;
-        //int minimumHeight = Math.Max(panelNavigation.Height, panelContent.PreferredSize.Height);
-        //this.MinimumSize = new Size(minimumWidth, minimumHeight);
-        //this.Size = new Size(minimumWidth, minimumHeight);
     }
 
     // Handles the Orders button event - slettet async
-    private void BtnOrders_Click(object sender, EventArgs e)
+    private async void BtnOrders_Click(object sender, EventArgs e)
     {
         // Hide the other controls in content panel
         foreach (Control control in panelContent.Controls)
@@ -81,7 +74,7 @@ public partial class MainForm : Form
         dataGridOrders.Visible = true;
 
         //Load a list of orders - slettet await async fra navn
-        LoadOrders();
+        await LoadOrders();
 
         // LoadDummyOrders for testing 
         //await LoadDummyOrdersAsync();
@@ -97,10 +90,7 @@ public partial class MainForm : Form
     }
 
     // Load orders from an API - slettet async og task
-    private async 
-    // Load orders from an API - slettet async og task
-    Task
-LoadOrders()
+    private async Task LoadOrders()
     {
         try
         {
@@ -154,19 +144,6 @@ LoadOrders()
             }
         }
 
-        //// Add a "Packed" checkbox column if it doesn't exist
-        //if (!dataGridOrderLines.Columns.Contains("Packed"))
-        //{
-        //    var checkBoxColumn = new DataGridViewCheckBoxColumn
-        //    {
-        //        HeaderText = "Pakket",
-        //        Name = "Packed",
-        //        Width = 100,
-        //        ReadOnly = false
-        //    };
-        //    dataGridOrderLines.Columns.Add(checkBoxColumn);
-        //}
-
     }
 
     // Load order lines from an API
@@ -202,6 +179,7 @@ LoadOrders()
             // Handle failure by throwing an exception
             MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
         }
+
     }
 
     // Load dummy data for orders 
@@ -318,7 +296,7 @@ LoadOrders()
             if ((int)row.Cells["OrderId"].Value == currentOrderId)
             {
                 // Reset the packed status
-                row.Cells["Status"].Value = "Ikke pakket";
+                row.Cells["Status"].Value = "Pending";
                 break;
             }
         }
@@ -329,8 +307,5 @@ LoadOrders()
 
     }
 
-    //private void DataGridOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)
-    //{
 
-    //}
 }

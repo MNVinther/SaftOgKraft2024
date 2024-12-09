@@ -146,9 +146,9 @@ partial class MainForm
         btnBack.Visible = false;
         dataGridOrders.Visible = true;
 
+
+
     }
 
-    #endregion
-
-    
+#endregion
 }
