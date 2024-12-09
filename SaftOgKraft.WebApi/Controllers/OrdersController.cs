@@ -47,9 +47,23 @@ public class OrdersController : ControllerBase
     // POST api/<OrdersController>
     [HttpPost("create")]
 
-    public async Task<ActionResult<int>> Post([FromBody] OrderDTO orderDTO)
+    public async Task<IActionResult> Create([FromBody] OrderDTO orderDTO)
     {
-        return Ok(await _orderDAO.CreateOrderAsync(orderDTO.FromDto()));
+        if (orderDTO == null || orderDTO.OrderLines == null || !orderDTO.OrderLines.Any())
+        {
+            return BadRequest("OrderDTO is invalid or contains no order lines.");
+        }
+
+        try
+        {
+            var order = DTOConverter.FromDto(orderDTO);
+            var createdOrder = await _orderDAO.CreateOrderAsync(order);
+            return Ok(DTOConverter.ToDto(createdOrder));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
 
     // PUT api/<OrdersController>/5

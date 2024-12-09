@@ -13,12 +13,8 @@ public class Order
     public int CustomerId { get; set; }
     public decimal TotalAmount { get; set; }
     public string? Status { get; set; }
-    public byte [] Version {  get; set; }
-    public List<OrderLine> OrderLines { get; set; }
+    public List<OrderLine> OrderLines { get; set; } = new();
 
-    public Order()
-    {
-        OrderLines = new List<OrderLine>();
-    }
+
 }
 

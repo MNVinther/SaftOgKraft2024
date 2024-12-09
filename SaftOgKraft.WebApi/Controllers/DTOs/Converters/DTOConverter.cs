@@ -45,12 +45,19 @@ public static class DTOConverter
     }
 
 
-    public static Order FromDto(this OrderDTO orderDtoToConvert)
-    {
-        Order order = new Order();
-        orderDtoToConvert.CopyPropertiesTo(order);
-        return order;
-    }
+    public static Order FromDto(this OrderDTO dto) =>
+        new Order
+        {
+            OrderDate = dto.OrderDate,
+            CustomerId = dto.CustomerId,
+            TotalAmount = dto.TotalAmount,
+            OrderLines = dto.OrderLines.Select(ol => new OrderLine
+            {
+                ProductId = ol.ProductId,
+                Quantity = ol.Quantity,
+                UnitPrice = ol.UnitPrice
+            }).ToList()
+        };
 
     public static IEnumerable<OrderDTO> ToDtos(this IEnumerable<Order> ordersToConvert)
     {
