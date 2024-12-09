@@ -10,7 +10,6 @@ public class OrderDTO
     public int CustomerId { get; set; }
     public decimal TotalAmount { get; set; }
     public string? Status { get; set; }
-    public byte[] Version { get; set; }
     public List<OrderLineDTO> OrderLines { get; set; }
 
 }

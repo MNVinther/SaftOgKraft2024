@@ -39,6 +39,18 @@ public class CartController : Controller
     return NoContent();
 }
 
+    public async Task<IActionResult> AlterCart(int id, int quantity)
+    {
+        var cart = await LoadUpdateAndSaveCart(async cart =>
+        {
+            var product = await _restClient.GetProductByIdAsync(id);
+            cart.ChangeQuantity(new ProductQuantity(product, quantity));
+        });
+
+        return View("Index", cart);
+        
+    }
+
     public async Task<ActionResult> Delete(int id)
     {
   
