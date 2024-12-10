@@ -43,7 +43,7 @@ public static class DTOConverter
         orderToConvert.CopyPropertiesTo(orderDto);
 
         // Explicitly map OrderLines
-        orderDto.OrderLines = orderToConvert.OrderLines?.Select(ol => ol.ToDto()).ToList();
+        orderDto.OrderLines = orderToConvert.OrderLines.Select(ol => ol.ToDto()).ToList();
 
         return orderDto;
     }

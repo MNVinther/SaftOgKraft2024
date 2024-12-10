@@ -79,15 +79,18 @@ public class OrdersController : ControllerBase
 
 
     [HttpPut("{orderId}/status")]
-    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDTO statusUpdate)
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] OrderDTO orderDTO)
     {
         try
         {
-            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, statusUpdate.Status);
+            //bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, statusUpdate.Status);
+
+            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, "Packed");
 
             if (isUpdated)
             {
                 return Ok(new { Message = "Order status updated successfully." });
+
             }
 
             return NotFound(new { Message = "Order not found or status update failed." });
