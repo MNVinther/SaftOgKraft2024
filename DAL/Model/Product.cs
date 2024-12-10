@@ -15,4 +15,5 @@ public class Product
     public decimal Price { get; set; }
     public string PictureUrl { get; set; }
     public byte[] Version { get; set; }
+    public int Stock { get; set; }
 }

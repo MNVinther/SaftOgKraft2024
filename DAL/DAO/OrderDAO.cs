@@ -12,18 +12,20 @@ public class OrderDAO : BaseDAO, IOrderDAO
 {
     // Queries
     private static readonly string InsertOrderSql =
-                @"INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount) " +
+                @"INSERT INTO [dbo].[Order] (OrderDate, CustomerId, TotalAmount) " +
                 "OUTPUT INSERTED.OrderId " +
                 "VALUES (@OrderDate, @CustomerId, @TotalAmount);";
 
     private static readonly string InsertOrderLineSql =
-                @"INSERT INTO [OrderLine] (OrderId, ProductId, Quantity, UnitPrice) " +
+                @"INSERT INTO [dbo].[OrderLine] (OrderId, ProductId, Quantity, UnitPrice) " +
                 "VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
 
     private static readonly string UpdateProductStockSql =
-                @"UPDATE [Product] " +
+                @"UPDATE [dbo][Product] " +
                 "SET Stock = Stock - @Quantity, Version = NEWID() " +
-                "WHERE ProductId = @ProductId AND Stock >= @Quantity AND Version = @Version;";
+                "WHERE ProductId = @ProductId " +
+                "AND Stock >= @Quantity " +
+                "AND Version = @Version;";
 
     private static readonly string GetProductStockAndVersionSql =
                 @"SELECT Stock, Version " +
@@ -38,7 +40,6 @@ public class OrderDAO : BaseDAO, IOrderDAO
     #region !!-- Crud section for Order. --!!
     public async Task<int> InsertOrderAsync(Order entity)
     {
-        // TODO: Kig på values om de skal parses som "entity.property" .
         try
         {
             
@@ -63,6 +64,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
         // Create a Check for stock on all products
         var productStockValidation = new Dictionary<int, (int Stock, byte[] Version)>();
+        var productsWithValidatedStock = new Dictionary<int, (int Stock, byte[] Version)>();
 
         // Loop through products in Orderlines
         foreach (var orderLine in entity.OrderLines)
@@ -72,7 +74,12 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
             if (productData.Stock < orderLine.Quantity)
             {
+                // Adds to a list of Products where quantity exceeds product stock
                 productStockValidation.Add(orderLine.ProductId, (productData.Stock, productData.Version));
+            } else
+            {
+                // Adds to a list of validated products
+                productsWithValidatedStock.Add(orderLine.ProductId, (productData.Stock, productData.Version));
             }
         }
 
@@ -107,7 +114,9 @@ public class OrderDAO : BaseDAO, IOrderDAO
                     UnitPrice = orderLine.UnitPrice
                 }, transaction);
 
-                var productData = productStockValidation[orderLine.ProductId];
+                var productData = productsWithValidatedStock[orderLine.ProductId];
+                // UpdateProductStock includes a version check.
+                // Only continues if product has enough stock and version matches (Optimistic Concurrency Control)
                 var rowsAffected = await connection.ExecuteAsync(UpdateProductStockSql,
                     new
                     {
