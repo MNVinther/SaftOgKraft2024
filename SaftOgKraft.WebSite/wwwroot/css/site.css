@@ -69,6 +69,32 @@
         padding-bottom: 20px;
     }
 
+    /* Notification popup for products added to cart */
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745; /* Green color for success */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+    .notification.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.hidden {
+    display: none;
+}
+
 
 
 html {

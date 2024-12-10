@@ -49,3 +49,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   await sortProducts();
   
 });
+
+/* Notification when adding products to cart */
+function showNotification(message) {
+  const notification = document.getElementById('cart-notification');
+  notification.querySelector('p').textContent = message; // Set the message
+  notification.classList.remove('hidden');
+  notification.classList.add('show');
+
+  // Hide the notification after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      notification.classList.add('hidden');
+    }, 300); // Match the CSS transition duration
+  }, 3000);
+}
+
+async function addToCart(productId, quantity) {
+  try {
+    const response = await fetch(`/Cart/Add?id=${productId}&quantity=${quantity}`, {
+      method: 'POST'
+    });
+
+    if (response.ok) {
+      showNotification('Product added to the cart!');
+    } else {
+      showNotification('Failed to add the product. Please try again.');
+    }
+  } catch (error) {
+    showNotification('An error occurred while adding the product.');
+  }
+}

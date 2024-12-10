@@ -40,8 +40,9 @@ public class OrderDAO : BaseDAO, IOrderDAO
     // if any of these fails we rollback
     public async Task<Order> CreateOrderAsync(Order entity)
     {
-        IDbConnection connection = CreateConnection();
+        using var connection = CreateConnection();
         connection.Open();
+
 
         // Step 1: Validate Stock for All Products
         var insufficientStockProducts = new Dictionary<int, byte[]>(); // ProductId -> Version
@@ -107,7 +108,6 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
             // Commit Transaction
             transaction.Commit();
-
             return entity;
         }
 
