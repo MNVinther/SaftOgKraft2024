@@ -24,7 +24,6 @@ public partial class MainForm : Form
     private int currentOrderId;
 
     // REST API for ordrer
-    //private IOrderRestClient _orderRestClientStub;
     private readonly IOrderRestClient _orderRestClient;
 
     // Cache for order lines

@@ -58,7 +58,7 @@ public class OrderRestClient : IOrderRestClient
             // Handle failure by throwing an exception
             throw new Exception($"Error fetching order lines for order ID {orderId}: {response.Content}");
         }
-        return response.Data;
+        return response.Data ?? throw new NullReferenceException("Null reference when trying to get order lines with method GetOrderLinesAsync in OrderRestClient.cs in the OrderManager project.");
     }
 
     public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
