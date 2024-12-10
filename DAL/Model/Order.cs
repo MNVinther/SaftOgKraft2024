@@ -15,6 +15,5 @@ public class Order
     public string? Status { get; set; }
     public List<OrderLine> OrderLines { get; set; } = new();
 
-
 }
 

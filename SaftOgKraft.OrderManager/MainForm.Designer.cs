@@ -54,18 +54,16 @@ partial class MainForm
         panelNavigation.Controls.Add(btnOrders);
         panelNavigation.Dock = DockStyle.Left;
         panelNavigation.Location = new Point(0, 0);
-        panelNavigation.Margin = new Padding(2, 2, 2, 2);
         panelNavigation.Name = "panelNavigation";
-        panelNavigation.Size = new Size(123, 362);
+        panelNavigation.Size = new Size(200, 779);
         panelNavigation.TabIndex = 0;
         // 
         // btnOrders
         // 
         btnOrders.Dock = DockStyle.Top;
         btnOrders.Location = new Point(0, 0);
-        btnOrders.Margin = new Padding(2, 2, 2, 2);
         btnOrders.Name = "btnOrders";
-        btnOrders.Size = new Size(123, 29);
+        btnOrders.Size = new Size(200, 46);
         btnOrders.TabIndex = 0;
         btnOrders.Text = "Ordre";
         btnOrders.UseVisualStyleBackColor = true;
@@ -79,19 +77,17 @@ partial class MainForm
         panelContent.Controls.Add(dataGridOrderLines);
         panelContent.Controls.Add(dataGridOrders);
         panelContent.Dock = DockStyle.Fill;
-        panelContent.Location = new Point(123, 0);
-        panelContent.Margin = new Padding(2, 2, 2, 2);
+        panelContent.Location = new Point(200, 0);
         panelContent.Name = "panelContent";
-        panelContent.Size = new Size(599, 600);
+        panelContent.Size = new Size(1224, 779);
         panelContent.TabIndex = 1;
         // 
         // btnBack
         // 
         btnBack.Dock = DockStyle.Bottom;
-        btnBack.Location = new Point(0, 333);
-        btnBack.Margin = new Padding(2, 2, 2, 2);
+        btnBack.Location = new Point(0, 733);
         btnBack.Name = "btnBack";
-        btnBack.Size = new Size(599, 29);
+        btnBack.Size = new Size(1224, 46);
         btnBack.TabIndex = 1;
         btnBack.Text = "Back";
         btnBack.UseVisualStyleBackColor = true;
@@ -100,13 +96,14 @@ partial class MainForm
         // 
         // dataGridOrderLines
         // 
+        dataGridOrderLines.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         dataGridOrderLines.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridOrderLines.Dock = DockStyle.Fill;
         dataGridOrderLines.Location = new Point(0, 0);
-        dataGridOrderLines.Margin = new Padding(2, 2, 2, 2);
         dataGridOrderLines.Name = "dataGridOrderLines";
         dataGridOrderLines.RowHeadersWidth = 82;
-        dataGridOrderLines.Size = new Size(599, 362);
+        dataGridOrderLines.ScrollBars = ScrollBars.Vertical;
+        dataGridOrderLines.Size = new Size(1224, 779);
         dataGridOrderLines.TabIndex = 1;
         dataGridOrderLines.Visible = false;
         dataGridOrderLines.CellContentClick += dataGridOrderLines_CellContentClick;
@@ -116,23 +113,22 @@ partial class MainForm
         dataGridOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridOrders.Dock = DockStyle.Fill;
         dataGridOrders.Location = new Point(0, 0);
-        dataGridOrders.Margin = new Padding(2, 2, 2, 2);
         dataGridOrders.Name = "dataGridOrders";
         dataGridOrders.RowHeadersWidth = 82;
-        dataGridOrders.Size = new Size(599, 362);
+        dataGridOrders.ScrollBars = ScrollBars.Vertical;
+        dataGridOrders.Size = new Size(1224, 779);
         dataGridOrders.TabIndex = 0;
         dataGridOrders.Visible = false;
         dataGridOrders.CellClick += DataGridOrders_CellClick;
         // 
         // MainForm
         // 
-        AutoScaleDimensions = new SizeF(8F, 20F);
+        AutoScaleDimensions = new SizeF(13F, 32F);
         AutoScaleMode = AutoScaleMode.Font;
         AutoSize = true;
-        ClientSize = new Size(722, 362);
+        ClientSize = new Size(1424, 779);
         Controls.Add(panelContent);
         Controls.Add(panelNavigation);
-        Margin = new Padding(2, 2, 2, 2);
         Name = "MainForm";
         Text = "MainForm";
         Load += MainForm_Load;
@@ -150,9 +146,9 @@ partial class MainForm
         btnBack.Visible = false;
         dataGridOrders.Visible = true;
 
+
+
     }
 
-    #endregion
-
-    
+#endregion
 }

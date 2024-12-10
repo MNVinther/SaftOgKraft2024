@@ -72,4 +72,9 @@ public class OrderRestClientStub : IOrderRestClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<bool> UpdateOrderStatusAsync(int currentOrderId, string status)
+    {
+        throw new NotImplementedException();
+    }
 }

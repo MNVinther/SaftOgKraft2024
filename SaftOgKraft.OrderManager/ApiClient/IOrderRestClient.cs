@@ -14,4 +14,5 @@ public interface IOrderRestClient
     Task<int> CreateOrderAsync(OrderDto order);
     Task<bool> UpdateOrderAsync(OrderDto order);
     Task<bool> DeleteOrderAsync(int id);
+    Task<bool> UpdateOrderStatusAsync(int orderId, string status);
 }

@@ -60,12 +60,30 @@ public class OrderRestClient : IOrderRestClient
         return response.Data ?? [];
     }
 
+    public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
+    {
+        // Create a GET request for staus on order
+        var request = new RestRequest($"orders/{orderId}/status", Method.Put);
+
+        // Add the status as a JSON body to the request
+        request.AddJsonBody(new { Status = status });
+
+        // Execute the request and get the response
+        var response = await _restClient.ExecuteAsync(request);
+
+        if (!response.IsSuccessful)
+        {
+            // Handle failure by throwing an exception
+            throw new Exception($"Error updating order status for order ID {orderId}: {response.Content}");
+        }
+        return response.IsSuccessful;
+    }
+
     //public Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
     //{
     //    var filteredOrderLines = _orderLines.Where(line => line.OrderId == orderId).ToList();
     //    return Task.FromResult<IEnumerable<OrderLineDto>>(filteredOrderLines);
     //}
-
     public Task<OrderDto> GetOrderByIdAsync(int id)
     {
         throw new NotImplementedException();
@@ -85,4 +103,5 @@ public class OrderRestClient : IOrderRestClient
     {
         throw new NotImplementedException();
     }
+
 }

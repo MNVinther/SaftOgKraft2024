@@ -46,7 +46,6 @@ public class OrdersController : ControllerBase
 
     // POST api/<OrdersController>
     [HttpPost("create")]
-
     public async Task<IActionResult> Create([FromBody] OrderDTO orderDTO)
     {
         if (orderDTO == null || orderDTO.OrderLines == null || !orderDTO.OrderLines.Any())
@@ -77,4 +76,28 @@ public class OrdersController : ControllerBase
     public void Delete(int id)
     {
     }
+
+
+    [HttpPut("{orderId}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDTO statusUpdate)
+    {
+        try
+        {
+            bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, statusUpdate.Status);
+
+            if (isUpdated)
+            {
+                return Ok(new { Message = "Order status updated successfully." });
+            }
+
+            return NotFound(new { Message = "Order not found or status update failed." });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error updating order status: {ex.Message}");
+        }
+    }
 }
+
+
+

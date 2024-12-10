@@ -28,8 +28,7 @@ public partial class MainForm : Form
     private readonly IOrderRestClient _orderRestClient;
 
     // Cache for order lines
-    private List<OrderLineDto> _orderLinesCache;
-
+    //private List<OrderLineDto> _orderLinesCache;
 
     public MainForm()
     {
@@ -60,16 +59,10 @@ public partial class MainForm : Form
         // Events for handling cell value and state changes
         dataGridOrderLines.CellValueChanged += DataGridOrderLines_CellValueChanged;
         dataGridOrderLines.CurrentCellDirtyStateChanged += DataGridOrderLines_CurrentCellDirtyStateChanged;
-
-        // Responsive window size
-        //int minimumWidth = panelNavigation.Width + panelContent.PreferredSize.Width;
-        //int minimumHeight = Math.Max(panelNavigation.Height, panelContent.PreferredSize.Height);
-        //this.MinimumSize = new Size(minimumWidth, minimumHeight);
-        //this.Size = new Size(minimumWidth, minimumHeight);
     }
 
     // Handles the Orders button event - slettet async
-    private void BtnOrders_Click(object sender, EventArgs e)
+    private async void BtnOrders_Click(object sender, EventArgs e)
     {
         // Hide the other controls in content panel
         foreach (Control control in panelContent.Controls)
@@ -81,23 +74,11 @@ public partial class MainForm : Form
         dataGridOrders.Visible = true;
 
         //Load a list of orders - slettet await async fra navn
-        LoadOrders();
+        await LoadOrders();
 
         // LoadDummyOrders for testing 
         //await LoadDummyOrdersAsync();
 
-        // Add a Status column to dataGridOrders if it doesn't exist
-        if (!dataGridOrders.Columns.Contains("Status"))
-        {
-            var statusColumn = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Status",
-                Name = "Status",
-                ReadOnly = true,
-                Width = 100
-            };
-            dataGridOrders.Columns.Add(statusColumn);
-        }
         // Set all other columns to read-only
         foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
         {
@@ -109,7 +90,7 @@ public partial class MainForm : Form
     }
 
     // Load orders from an API - slettet async og task
-    private async void LoadOrders()
+    private async Task LoadOrders()
     {
         try
         {
@@ -154,18 +135,6 @@ public partial class MainForm : Form
         // LoadDummyOrders for testing 
         //await LoadDummyOrderLinesAsync(orderId);
 
-        // Set the value of "Packed" checkbox based on cached data
-        foreach (var orderLine in _orderLinesCache)
-        {
-            var rowIndex = dataGridOrderLines.Rows.Cast<DataGridViewRow>()
-                .FirstOrDefault(row => (int)row.Cells["OrderLineId"].Value == orderLine.OrderLineId)?.Index;
-
-            if (rowIndex != null)
-            {
-                dataGridOrderLines.Rows[rowIndex.Value].Cells["Packed"].Value = orderLine.Packed;
-            }
-        }
-
         // Set all other columns to read-only
         foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
         {
@@ -173,19 +142,6 @@ public partial class MainForm : Form
             {
                 column.ReadOnly = true;
             }
-        }
-
-        // Add a "Packed" checkbox column if it doesn't exist
-        if (!dataGridOrderLines.Columns.Contains("Packed"))
-        {
-            var checkBoxColumn = new DataGridViewCheckBoxColumn
-            {
-                HeaderText = "Pakket",
-                Name = "Packed",
-                Width = 100,
-                ReadOnly = false
-            };
-            dataGridOrderLines.Columns.Add(checkBoxColumn);
         }
 
     }
@@ -199,19 +155,31 @@ public partial class MainForm : Form
             var orderLines = await _orderRestClient.GetOrderLinesAsync(orderId);
 
             // Cache order lines
-            _orderLinesCache = orderLines.ToList();
+            //_orderLinesCache = orderLines.ToList();
 
             // Put data to DataGridView
-            //dataGridOrderLines.DataSource = orderLines.ToList();
+            dataGridOrderLines.DataSource = orderLines.ToList();
 
-            dataGridOrderLines.DataSource = _orderLinesCache;
+            //.DataSource = _orderLinesCache;
 
+            //// Set the value of "Packed" checkbox based on cached data
+            //foreach (var orderLine in _orderLinesCache)
+            //{
+            //    var rowIndex = dataGridOrderLines.Rows.Cast<DataGridViewRow>()
+            //        .FirstOrDefault(row => (int)row.Cells["OrderLineId"].Value == orderLine.OrderLineId)?.Index;
+
+            //    if (rowIndex != null)
+            //    {
+            //        dataGridOrderLines.Rows[rowIndex.Value].Cells["Packed"].Value = orderLine.Packed;
+            //    }
+            //}
         }
         catch (Exception ex)
         {
             // Handle failure by throwing an exception
             MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
         }
+
     }
 
     // Load dummy data for orders 
@@ -273,7 +241,7 @@ public partial class MainForm : Form
 
             if (allPacked)
             {
-                MarkOrderAsPacked();
+                MarkOrderAsPackedAsync();
             }
             else
             {
@@ -282,8 +250,18 @@ public partial class MainForm : Form
         }
     }
 
+    private async Task RefreshData()
+    {
+        await LoadOrders();
+
+        if (currentOrderId > 0)
+        {
+            await LoadOrderLinesAsync(currentOrderId);
+        }
+    }
+
     // Marks the current order as packed in dataGridOrders
-    private void MarkOrderAsPacked()
+    private async Task MarkOrderAsPackedAsync()
     {
         foreach (DataGridViewRow row in dataGridOrders.Rows)
         {
@@ -291,12 +269,22 @@ public partial class MainForm : Form
             if ((int)row.Cells["OrderId"].Value == currentOrderId)
             {
                 // Set the packed status
-                row.Cells["Status"].Value = "✔️ Pakket";
+                row.Cells["Status"].Value = "Packed";
+
+                // Update the order status in the database
+                bool isUpdated = await _orderRestClient.UpdateOrderStatusAsync(currentOrderId, "Packed");
+                if (isUpdated)
+                {
+                    MessageBox.Show("Ordren er pakket og status er opdateret i databasen!", "Status");
+                    await RefreshData();
+                }
+                else
+                {
+                    MessageBox.Show("Fejl ved opdatering af ordren i databasen.", "Fejl");
+                }
                 break;
             }
         }
-
-        MessageBox.Show("Ordren er pakket!", "Status");
     }
 
     // Removes the packed status for the current order in dataGridOrders
@@ -308,7 +296,7 @@ public partial class MainForm : Form
             if ((int)row.Cells["OrderId"].Value == currentOrderId)
             {
                 // Reset the packed status
-                row.Cells["Status"].Value = "Ikke pakket";
+                row.Cells["Status"].Value = "Pending";
                 break;
             }
         }
@@ -319,8 +307,5 @@ public partial class MainForm : Form
 
     }
 
-    //private void DataGridOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)
-    //{
 
-    //}
 }
