@@ -19,8 +19,6 @@ namespace SaftOgKraft.WebApi
             builder.Services.AddSingleton<IProductDAO>((_) => new ProductDAO(connectionString));
             builder.Services.AddSingleton<IOrderDAO>((_) => new OrderDAO(connectionString));
 
-            //builder.Services.AddSingleton<INogetAndetDAO>((_) => new NogetAndetDAO(connectionString));
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

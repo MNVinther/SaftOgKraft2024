@@ -25,7 +25,8 @@
                          <p>Price: $@item.Price</p>
                          <br />
                          <div class="cart-btn">
-                         <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = item.Id, quantity = 1 })">Add To Cart</a>
+                                <script src="~/js/site.js"></script>
+                         <a class="btn btn-primary" onclick="addToCart(@item.Id, 1)" href="@Url.Action("Add", "Cart", new { id = item.Id, quantity = 1 })">Add To Cart</a>
                          </div>
                      </div>
                   }

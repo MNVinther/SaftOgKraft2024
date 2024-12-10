@@ -134,8 +134,23 @@ public class RestApiClient : IRestClient
             ? throw new Exception($"Error updating product. Status: {response.StatusCode}, Message: {response.Content}")
             : response.Data;
             }
-                
-       
+
+
+    public async Task<OrderDto> CreateOrderAsync(OrderDto order)
+    {
+        var request = new RestRequest($"orders/create", Method.Post);
+
+        request.AddJsonBody(order);
+
+        var response = await _restClient.ExecuteAsync<OrderDto>(request);
+
+        if (!response.IsSuccessful)
+        {
+            throw new Exception($"Error creating new order: {response.ErrorMessage}");
+        }
+        return response.Data;
+    }
+
 }
 
 

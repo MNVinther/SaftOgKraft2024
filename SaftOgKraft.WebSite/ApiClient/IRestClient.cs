@@ -16,6 +16,7 @@ namespace SaftOgKraft.WebSite.ApiClient
         Task<IEnumerable<ProductDto>> GetTenLatestProducts();
 
         Task<ProductDto> GetProductByIdAsync(int id);
+        Task<OrderDto> CreateOrderAsync(OrderDto order);
         //Task<int> CreateProductAsync(ProductDto product);
         //Task<bool> UpdateProductAsync(ProductDto product);
         //Task<bool> DeleteProductAsync(int id);
