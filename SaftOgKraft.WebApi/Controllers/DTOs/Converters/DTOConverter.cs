@@ -49,16 +49,20 @@ public static class DTOConverter
     }
 
 
-    public static Order FromDto(this OrderDTO orderDtoToConvert)
-    {
-        Order order = new Order();
-        orderDtoToConvert.CopyPropertiesTo(order);
+    public static Order FromDto(this OrderDTO dto) =>
+        new Order
+        {
+            OrderDate = dto.OrderDate,
+            CustomerId = dto.CustomerId,
+            TotalAmount = dto.TotalAmount,
+            OrderLines = dto.OrderLines.Select(ol => new OrderLine
+            {
+                ProductId = ol.ProductId,
+                Quantity = ol.Quantity,
+                UnitPrice = ol.UnitPrice
+            }).ToList()
+        };
 
-        // Explicitly map OrderLines
-        order.OrderLines = orderDtoToConvert.OrderLines?.Select(olDto => olDto.FromDto()).ToList();
-
-        return order;
-    }
 
     public static IEnumerable<OrderDTO> ToDtos(this IEnumerable<Order> ordersToConvert)
     {
@@ -76,17 +80,18 @@ public static class DTOConverter
         }
     }
 
-
-
-
     #endregion
 
     #region OrderLine Conversion
-    public static OrderLineDTO ToDto(this OrderLine orderLineToConvert)
+    public static OrderLineDTO ToDto(this OrderLine orderLine)
     {
-        var orderLineDto = new OrderLineDTO();
-        orderLineToConvert.CopyPropertiesTo(orderLineDto);
-        return orderLineDto;
+        return new OrderLineDTO
+        {
+            ProductId = orderLine.ProductId,
+            Quantity = orderLine.Quantity,
+            UnitPrice = orderLine.UnitPrice,
+           
+        };
     }
 
     public static OrderLine FromDto(this OrderLineDTO dto)
@@ -98,6 +103,7 @@ public static class DTOConverter
             UnitPrice = dto.UnitPrice
         };
     }
+
 
     public static IEnumerable<OrderLineDTO> ToDtos(this IEnumerable<OrderLine> orderLinesToConvert)
     {

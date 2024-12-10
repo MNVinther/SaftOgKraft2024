@@ -10,29 +10,29 @@ using Dapper;
 namespace DAL.DAO;
 public class OrderDAO : BaseDAO, IOrderDAO
 {
+    // Queries defined as readonly fields
+    private static readonly string InsertOrderSql = @"
+        INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount)
+        OUTPUT INSERTED.OrderId
+        VALUES (@OrderDate, @CustomerId, @TotalAmount);";
+
+    private static readonly string InsertOrderLineSql = @"
+        INSERT INTO OrderLine (OrderId, ProductId, Quantity, UnitPrice)
+        VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
+
+    private static readonly string UpdateProductStockSql = @"
+        UPDATE Product
+        SET Stock = Stock - @Quantity
+        WHERE ProductId = @ProductId AND Stock >= @Quantity";// AND Version = @Version;";
+
+    private static readonly string GetProductStockAndVersionSql = @"
+        SELECT Stock, Version FROM Product WHERE ProductId = @ProductId;";
     public OrderDAO(string connectionString) : base(connectionString)
     {
     }
 
     #region !!-- Crud section for Order. --!!
-    public async Task<int> InsertOrderAsync(Order entity)
-    {
-        // TODO: Kig på values om de skal parses som "entity.property" .
-        try
-        {
-            var query =
-                "INSERT INTO Order (OrderId, OrderDate, CustomerId, TotalAmount, Status) " +
-                "OUTPUT INSERTED.Id " +
-                "VALUES (@OrderId, @OrderDate, @CustomerId, @TotalAmount, @Status";
-            using var connection = CreateConnection();
-            return await connection.QuerySingleAsync<int>(query, entity);
 
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error inserting new order: '{ex.Message}'.", ex);
-        }
-    }
     // This async method CreateOrder is used for creating an order for the sale on the website.
     // We do so by first checking if we have the requested products in stock. 
     // Then If we have the products we insert an order in DB.
@@ -42,63 +42,84 @@ public class OrderDAO : BaseDAO, IOrderDAO
     {
         using var connection = CreateConnection();
         connection.Open();
-        using var transaction = connection.BeginTransaction();
 
-        try
+
+        // Step 1: Validate Stock for All Products
+        var insufficientStockProducts = new Dictionary<int, byte[]>(); // ProductId -> Version
+        foreach (var orderLine in entity.OrderLines)
         {
-            // Step 1: Insert Order
-            string insertOrderSql = @"
-        INSERT INTO [Order] (OrderDate, CustomerId, TotalAmount)
-        OUTPUT INSERTED.OrderId, INSERTED.Version
-        VALUES (@OrderDate, @CustomerId, @TotalAmount);";
+            var productData = await connection.QuerySingleOrDefaultAsync<(int Stock, byte[] Version)>(
+                GetProductStockAndVersionSql,
+                new { ProductId = orderLine.ProductId });
 
-            var orderResult = await connection.QuerySingleAsync<(int OrderId, byte[] Version)>(insertOrderSql, entity, transaction);
-            entity.OrderId = orderResult.OrderId;
-            entity.Version = orderResult.Version;
+            Console.WriteLine($"ProductId: {orderLine.ProductId}, Stock: {productData.Stock}, Version: {Convert.ToBase64String(productData.Version)}");
 
-            // Step 2: Insert OrderLines
-            string insertOrderLineSql = @"
-        INSERT INTO OrderLine (OrderId, ProductId, Quantity, UnitPrice)
-        VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice);";
-
-            foreach (var orderLine in entity.OrderLines)
+            if (productData == default || productData.Stock < orderLine.Quantity)
             {
-                // Insert the OrderLine
-                await connection.ExecuteAsync(insertOrderLineSql, new
-                {
-                    OrderId = entity.OrderId,
-                    ProductId = orderLine.ProductId,
-                    Quantity = orderLine.Quantity,
-                    UnitPrice = orderLine.UnitPrice
-                }, transaction);
-
-                // Step 3: Deduct Stock for the Product
-                string updateProductStockSql = @"
-            UPDATE Product
-            SET Stock = Stock - @Quantity
-            WHERE ProductId = @ProductId AND Stock >= @Quantity;
-
-            IF (@@ROWCOUNT = 0)
-                THROW 50000, 'Not enough stock available or stock has been modified.', 1;";
-
-                await connection.ExecuteAsync(updateProductStockSql, new
-                {
-                    ProductId = orderLine.ProductId,
-                    Quantity = orderLine.Quantity
-                }, transaction);
+                Console.WriteLine($"Insufficient stock for ProductId {orderLine.ProductId}.");
+                throw new InvalidOperationException($"Insufficient stock for ProductId {orderLine.ProductId}.");
             }
 
-            // Commit transaction
+            insufficientStockProducts[orderLine.ProductId] = productData.Version;
+        }
+        Thread.Sleep( 5000 );
+        // Step 2: Transaction for Order Creation
+        using var transaction = connection.BeginTransaction(IsolationLevel.ReadUncommitted); //TODO: Spørg Lars
+        try
+        {
+            // Insert Order
+            var orderId = await connection.QuerySingleAsync<int>(
+                InsertOrderSql,
+                entity,
+                transaction);
+
+            entity.OrderId = orderId;
+
+            // Insert OrderLines and Update Stock
+            foreach (var orderLine in entity.OrderLines)
+            {
+                // Insert OrderLine
+                await connection.ExecuteAsync(
+                    InsertOrderLineSql,
+                    new
+                    {
+                        OrderId = entity.OrderId,
+                        ProductId = orderLine.ProductId,
+                        Quantity = orderLine.Quantity,
+                        UnitPrice = orderLine.UnitPrice
+                    },
+                    transaction);
+
+                var rowsAffected = await connection.ExecuteAsync(
+                    UpdateProductStockSql,
+                    new
+                    {
+                        ProductId = orderLine.ProductId,
+                        Quantity = orderLine.Quantity,
+                        
+                    },
+                    transaction);
+
+                if (rowsAffected == 0)
+                {
+                    throw new InvalidOperationException($"Failed to update stock for ProductId {orderLine.ProductId}. Stock may have been modified by another transaction.");
+                }
+            }
+
+            // Commit Transaction
             transaction.Commit();
             return entity;
         }
-        catch (Exception ex)
+
+        catch
         {
-            // Rollback transaction in case of error
+            // Rollback Transaction in Case of Error
             transaction.Rollback();
-            throw new DataException("Error creating order and updating stock", ex);
+            throw new DataException("Error creating order and updating stock");
         }
     }
+
+
 
     // This method retrieves all orders from the database
 
@@ -148,9 +169,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
 
     #endregion
+
 }
-
-
 
 #region Unused code
 //public async Task<IEnumerable<Order>> GetAllOrdersAsync()
