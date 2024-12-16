@@ -43,7 +43,7 @@ public static class DTOConverter
         orderToConvert.CopyPropertiesTo(orderDto);
 
         // Explicitly map OrderLines
-        orderDto.OrderLines = orderToConvert.OrderLines?.Select(ol => ol.ToDto()).ToList();
+        orderDto.OrderLines = orderToConvert.OrderLines.Select(ol => ol.ToDto()).ToList();
 
         return orderDto;
     }
@@ -87,9 +87,10 @@ public static class DTOConverter
     {
         return new OrderLineDTO
         {
+            ProductName = orderLine.ProductName,
             ProductId = orderLine.ProductId,
             Quantity = orderLine.Quantity,
-            UnitPrice = orderLine.UnitPrice,
+            UnitPrice = orderLine.UnitPrice
            
         };
     }
@@ -98,6 +99,7 @@ public static class DTOConverter
     {
         return new OrderLine
         {
+            ProductName = dto.ProductName,
             ProductId = dto.ProductId,
             Quantity = dto.Quantity,
             UnitPrice = dto.UnitPrice

@@ -121,7 +121,7 @@ public class RestApiClient : IRestClient
         var response = await _restClient.ExecuteAsync<ProductDto>(request);
         return !response.IsSuccessful
             ? throw new Exception($"Error retrieving product with ID {id}. Message was: {response.Content}")
-            : response.Data;
+            : response.Data ?? throw new NullReferenceException("Null reference in method GetProductByIdAsync in website project (RestApiClient.cs)");
     }
 
     // public Task<bool> UpdateProductAsync(ProductDto entity)
@@ -148,7 +148,7 @@ public class RestApiClient : IRestClient
         {
             throw new Exception($"Error creating new order: {response.ErrorMessage}");
         }
-        return response.Data;
+        return response.Data ?? throw new NullReferenceException("Null reference when trying to create order in method CreateOrderAsync in RestApiClient.cs in website project.");
     }
 
 }

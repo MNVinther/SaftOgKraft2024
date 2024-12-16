@@ -24,7 +24,6 @@ public partial class MainForm : Form
     private int currentOrderId;
 
     // REST API for ordrer
-    //private IOrderRestClient _orderRestClientStub;
     private readonly IOrderRestClient _orderRestClient;
 
     // Cache for order lines
@@ -132,8 +131,6 @@ public partial class MainForm : Form
         // Load order lines for the selected order
         await LoadOrderLinesAsync(orderId);
 
-        // LoadDummyOrders for testing 
-        //await LoadDummyOrderLinesAsync(orderId);
 
         // Set all other columns to read-only
         foreach (DataGridViewColumn column in dataGridOrderLines.Columns)
@@ -154,25 +151,9 @@ public partial class MainForm : Form
             // Get orderLine from the API
             var orderLines = await _orderRestClient.GetOrderLinesAsync(orderId);
 
-            // Cache order lines
-            //_orderLinesCache = orderLines.ToList();
-
             // Put data to DataGridView
             dataGridOrderLines.DataSource = orderLines.ToList();
 
-            //.DataSource = _orderLinesCache;
-
-            //// Set the value of "Packed" checkbox based on cached data
-            //foreach (var orderLine in _orderLinesCache)
-            //{
-            //    var rowIndex = dataGridOrderLines.Rows.Cast<DataGridViewRow>()
-            //        .FirstOrDefault(row => (int)row.Cells["OrderLineId"].Value == orderLine.OrderLineId)?.Index;
-
-            //    if (rowIndex != null)
-            //    {
-            //        dataGridOrderLines.Rows[rowIndex.Value].Cells["Packed"].Value = orderLine.Packed;
-            //    }
-            //}
         }
         catch (Exception ex)
         {
@@ -182,44 +163,6 @@ public partial class MainForm : Form
 
     }
 
-    // Load dummy data for orders 
-    //private async Task LoadDummyOrdersAsync()
-    //{
-    //    try
-    //    {
-    //        var dummyOrders = await _orderRestClientStub.GetAllOrdersAsync();
-
-    //        // Send dummy data to the DataOrderGridView
-    //        dataGridOrders.DataSource = dummyOrders;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // Handle failure by throwing an exception
-    //        MessageBox.Show($"Der skete en fejl: {ex.Message}");
-    //    }
-    //}
-
-    // Load dummy data for order lines
-    //private async Task LoadDummyOrderLinesAsync(int orderId)
-    //{
-    //    try
-    //    {
-    //        var dummyOrderLines = await _orderRestClientStub.GetOrderLinesAsync(orderId);
-
-    //        // Cache order lines
-    //        _orderLinesCache = dummyOrderLines.ToList();
-
-
-    //        // Send dummy data to the DataOrderLineGridView 
-    //        //dataGridOrderLines.DataSource = dummyOrderLines;
-    //        dataGridOrderLines.DataSource = _orderLinesCache;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // Handle failure by throwing an exception
-    //        MessageBox.Show($"Fejl ved hentning af ordrelinjer: {ex.Message}");
-    //    }
-    //}
 
     // Handles changes to the Packed checkbox values in dataGridOrderLines
     private void DataGridOrderLines_CellValueChanged(object sender, DataGridViewCellEventArgs e)

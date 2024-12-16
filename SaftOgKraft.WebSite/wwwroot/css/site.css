@@ -17,6 +17,16 @@
     object-fit: contain;
 
 }
+/*Home Icon Top right*/
+.home-icon {
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+    aspect-ratio: auto;
+    width: 3em;
+    height: auto;
+    border-radius: 50%;
+}
 .product-list {
     display: flex;
     flex-wrap: wrap;

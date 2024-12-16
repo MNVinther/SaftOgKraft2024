@@ -44,6 +44,7 @@ public class OrderRestClient : IOrderRestClient
         }
 
     }
+
     public async Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
     {
         // Create a GET request for the orderLines
@@ -57,7 +58,7 @@ public class OrderRestClient : IOrderRestClient
             // Handle failure by throwing an exception
             throw new Exception($"Error fetching order lines for order ID {orderId}: {response.Content}");
         }
-        return response.Data ?? [];
+        return response.Data ?? throw new NullReferenceException("Null reference when trying to get order lines with method GetOrderLinesAsync in OrderRestClient.cs in the OrderManager project.");
     }
 
     public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
@@ -79,16 +80,10 @@ public class OrderRestClient : IOrderRestClient
         return response.IsSuccessful;
     }
 
-    //public Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
-    //{
-    //    var filteredOrderLines = _orderLines.Where(line => line.OrderId == orderId).ToList();
-    //    return Task.FromResult<IEnumerable<OrderLineDto>>(filteredOrderLines);
-    //}
     public Task<OrderDto> GetOrderByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
-
 
     public Task<bool> UpdateOrderAsync(OrderDto order)
     {

@@ -8,24 +8,17 @@ using System.Threading.Tasks;
 namespace SaftOgKraft.OrderManager.ApiClient.DTOs;
 public class OrderLineDto
 {
+    //public int OrderLineId { get; set; }
 
-    public int OrderLineId { get; set; }
-
-    [Required]
-    public required int OrderId { get; set; }
+    //public int OrderId { get; set; }
     
-    [Required]
-    public string ProductName { get; set; }
+    public int Quantity { get; set; }
 
-    [Required]
-    public required int ProductId { get; set; }
+    public string? ProductName { get; set; }
 
-    [Required]
-    public required int Quantity { get; set; }
+    public int ProductId { get; set; }
 
-    [Required]
-    public required decimal UnitPrice { get; set; }
-
-    [Required] 
+    public decimal UnitPrice { get; set; }
+ 
     public bool Packed { get; set; }
 }
