@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.DAO;
 using DAL.Model;
+using SaftOgKraft.WebSite.Models;
 using Dapper;
 
 namespace TestingSaftOgKraft.DAL;
