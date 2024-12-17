@@ -1,0 +1,21 @@
+﻿INSERT INTO [dbo].[Product] ([ProductName], [Description], [Price], [Stock], [PictureUrl])
+VALUES 
+('Apple Juice', 'Fresh apple juice made from organic apples.', 12.50, 100, '/lib/images/products/applejuice.jpg'),
+('Orange Juice', 'Pure orange juice with no added sugar.', 15.00, 150, '/lib/images/products/orangejuice.jpg' ),
+('Mango Smoothie', 'Smooth mango blend with a touch of coconut.', 18.00, 80, '/lib/images/products/mangosmoothie.jpg' ),
+('Strawberry Smoothie', 'Delicious strawberry smoothie with natural ingredients.', 16.50, 90, '/lib/images/products/strawberrysmoothie.jpg' ),
+('Pineapple Juice', 'Tropical pineapple juice, refreshing and sweet.', 14.00, 110, '/lib/images/products/pineapplejuice.jpg' ),
+('Mixed Berry Juice', 'A blend of blueberries, raspberries, and strawberries.', 17.00, 70, '/lib/images/products/mixedberryjuice.jpg' ),
+('Green Juice', 'Healthy green juice with kale, spinach, and apple.', 20.00, 60, '/lib/images/products/greenjuice.jpg' ),
+('Beetroot Juice', 'Fresh beetroot juice with a hint of lemon.', 13.00, 75, '/lib/images/products/beetrootjuice.jpg' ),
+('Carrot Juice', 'Natural carrot juice with added ginger.', 12.00, 85, '/lib/images/products/carrotjuice.jpg' ),
+('Watermelon Juice', 'Sweet and refreshing watermelon juice.', 11.50, 120, '/lib/images/products/watermelonjuice.jpg' ),
+('Ginger Shot', 'Powerful ginger shot with lemon and honey.', 5.00, 200, '/lib/images/products/gingershot.jpg' ),
+('Tropical Smoothie', 'Pineapple, mango, and banana smoothie.', 18.50, 65, '/lib/images/products/tropicalsmoothie.jpg' ),
+('Banana Shake', 'Creamy banana shake made with almond milk.', 14.50, 100, '/lib/images/products/bananashake.jpg' ),
+('Protein Smoothie', 'Smoothie with added protein for energy.', 22.00, 50, '/lib/images/products/proteinsmoothie.jpg' ),
+('Cold Brew Coffee', 'Smooth cold brew coffee with a hint of chocolate.', 25.00, 40, '/lib/images/products/coldbrewcoffee.jpg' );
+
+INSERT INTO [dbo].[Customer] ([FirstName],[LastName],[Email],[Phone],[Address],[City],[PostalCode])
+VALUES
+('John', 'Doe', 'JohnDoe@gmail.com', '20421234', 'RoseVænget 12', 'Aalborg', '9000')

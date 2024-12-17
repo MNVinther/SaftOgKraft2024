@@ -1,0 +1,43 @@
+﻿-- Create Product table
+CREATE TABLE [dbo].[Product] (
+    [ProductId] INT IDENTITY(1,1) PRIMARY KEY,
+    [ProductName] NVARCHAR(100) NOT NULL,
+    [Description] NVARCHAR(500) NULL,
+    [Price] DECIMAL(10, 2) NOT NULL,
+    [Stock] INT NOT NULL,
+    [PictureUrl] NVARCHAR(255) NULL,
+    [Version] ROWVERSION
+);
+
+-- Create Customer table
+CREATE TABLE [dbo].[Customer] (
+    [CustomerId] INT IDENTITY(1,1) PRIMARY KEY,
+    [FirstName] NVARCHAR(100) NOT NULL,
+    [LastName] NVARCHAR(100) NOT NULL,
+    [Email] NVARCHAR(100) NOT NULL,
+    [Phone] NVARCHAR(15) NULL,
+    [Address] NVARCHAR(200) NULL,
+    [City] NVARCHAR(100) NULL,
+    [PostalCode] NVARCHAR(10) NULL
+);
+
+-- Create Order table
+CREATE TABLE [dbo].[Order] (
+    [OrderId] INT IDENTITY(1,1) PRIMARY KEY,
+    [OrderDate] DATETIME NOT NULL DEFAULT GETDATE(),
+    [CustomerId] INT NOT NULL,
+    [TotalAmount] DECIMAL(10, 2) NOT NULL,
+    [Status] NVARCHAR(50) NOT NULL DEFAULT 'Pending',
+    CONSTRAINT FK_Order_Customer FOREIGN KEY (CustomerId) REFERENCES [dbo].[Customer](CustomerId)
+);
+
+-- Create OrderLine table
+CREATE TABLE [dbo].[OrderLine] (
+    [OrderLineId] INT IDENTITY(1,1) PRIMARY KEY,
+    [OrderId] INT NOT NULL,
+    [ProductId] INT NOT NULL,
+    [Quantity] INT NOT NULL,
+    [UnitPrice] DECIMAL(10, 2) NOT NULL,
+    CONSTRAINT FK_OrderLine_Order FOREIGN KEY (OrderId) REFERENCES [dbo].[Order](OrderId),
+    CONSTRAINT FK_OrderLine_Product FOREIGN KEY (ProductId) REFERENCES [dbo].[Product](ProductId)
+);
