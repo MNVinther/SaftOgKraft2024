@@ -22,7 +22,7 @@ public class OrderRestClient : IOrderRestClient
     public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
     {
         // Create a GET request for the orders
-        var request = new RestRequest("orders/all", Method.Get);
+        var request = new RestRequest($"orders", Method.Get);
 
         try
         {
@@ -48,7 +48,7 @@ public class OrderRestClient : IOrderRestClient
     public async Task<IEnumerable<OrderLineDto>> GetOrderLinesAsync(int orderId)
     {
         // Create a GET request for the orderLines
-        var request = new RestRequest($"orders/{orderId}/lines", Method.Get);
+        var request = new RestRequest($"orders/{orderId}", Method.Get);
 
         // Execute the request and recive a collection OrderLineDto
         var response = await _restClient.ExecuteAsync<IEnumerable<OrderLineDto>>(request);
@@ -64,7 +64,7 @@ public class OrderRestClient : IOrderRestClient
     public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
     {
         // Create a GET request for staus on order
-        var request = new RestRequest($"orders/{orderId}/status", Method.Put);
+        var request = new RestRequest($"orders/{orderId}", Method.Put);
 
         // Add the status as a JSON body to the request
         request.AddJsonBody(new { Status = status });

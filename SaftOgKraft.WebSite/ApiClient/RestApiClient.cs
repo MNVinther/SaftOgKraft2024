@@ -45,10 +45,7 @@ public class RestApiClient : IRestClient
 
     public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
     {
-        var request = new RestRequest("products/all")
-        {
-            Method = Method.Get
-        };
+        var request = new RestRequest($"products", Method.Get);
 
         var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
 
@@ -89,7 +86,7 @@ public class RestApiClient : IRestClient
     public async Task<IEnumerable<ProductDto>> GetTenLatestProducts()
     {
         // Create a request for the "products" endpoint with a GET method
-        var request = new RestRequest($"products/ten-latest", Method.Get);
+        var request = new RestRequest($"products/tenlatest", Method.Get);
 
         // Add a query parameter "filter" with the value "GetTenLatest"
         //request.AddParameter("filter", "latest10");
@@ -138,7 +135,7 @@ public class RestApiClient : IRestClient
 
     public async Task<OrderDto> CreateOrderAsync(OrderDto order)
     {
-        var request = new RestRequest($"orders/create", Method.Post);
+        var request = new RestRequest($"orders", Method.Post);
 
         request.AddJsonBody(order);
 

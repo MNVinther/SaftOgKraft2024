@@ -15,7 +15,7 @@ public class OrdersController : ControllerBase
     public OrdersController(IOrderDAO orderDAO) => _orderDAO = orderDAO;
 
     // GET: api/<OrdersController>
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersAsync()
     {
         try
@@ -29,8 +29,8 @@ public class OrdersController : ControllerBase
         }
     }
 
-    // GET api/<OrdersController>/5/lines
-    [HttpGet("{orderId}/lines")]
+    // GET api/<OrdersController>/5/
+    [HttpGet("{orderId}")]
     public async Task<ActionResult<IEnumerable<OrderLineDTO>>> GetOrderLinesAsync(int orderId)
     {
         try
@@ -45,7 +45,7 @@ public class OrdersController : ControllerBase
     }
 
     // POST api/<OrdersController>
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] OrderDTO orderDTO)
     {
         if (orderDTO == null || orderDTO.OrderLines == null || !orderDTO.OrderLines.Any())
@@ -65,11 +65,6 @@ public class OrdersController : ControllerBase
         }
     }
 
-    // PUT api/<OrdersController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
 
     // DELETE api/<OrdersController>/5
     [HttpDelete("{id}")]
@@ -78,7 +73,7 @@ public class OrdersController : ControllerBase
     }
 
 
-    [HttpPut("{orderId}/status")]
+    [HttpPut("{orderId}")]
     public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] OrderDTO orderDTO)
     {
         try

@@ -33,7 +33,7 @@ public class ProductsController : ControllerBase
         }
 
         // GET: api/ProductsController
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             var products = await _productsDAO.GetAllAsync();
@@ -41,7 +41,7 @@ public class ProductsController : ControllerBase
         }
         
     // GET: api/ProductsController>
-    [HttpGet("ten-latest")]
+    [HttpGet("tenlatest")]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetTenlatestProducts()
     {
         IEnumerable<Product> products;
