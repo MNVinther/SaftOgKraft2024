@@ -27,7 +27,22 @@ public class OrderDAO : BaseDAO, IOrderDAO
 
     private static readonly string GetProductStockAndVersionSql = @"
         SELECT Stock, Version FROM Product WHERE ProductId = @ProductId;";
-        
+
+    private static readonly string GetAllOrders = @"
+        SELECT * FROM [Order]";
+
+    private static readonly string GetOrderLines = @"
+        SELECT ol.OrderLineId, ol.OrderId, ol.Quantity, ol.UnitPrice, 
+          p.ProductId, p.ProductName FROM OrderLine ol INNER JOIN Product p 
+          ON ol.ProductId = p.ProductId INNER JOIN [Order] o ON ol.OrderId = o.OrderId 
+          WHERE ol.OrderId = @OrderId;";
+
+    private static readonly string UpdateOrderStatus = @"
+         UPDATE [Order] SET Status = @Status WHERE OrderId = @OrderId;";
+
+
+
+
     // Constructor for OrderDAO that takes a Connection String.    
     public OrderDAO(string connectionString) : base(connectionString)
     {
@@ -128,9 +143,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
     {
         try
         {
-            var query = "SELECT * FROM [dbo].[Order]";
             using var connection = CreateConnection();
-            return (await connection.QueryAsync<Order>(query)).ToList();
+            return (await connection.QueryAsync<Order>(GetAllOrders)).ToList();
         }
         catch (Exception ex)
         {
@@ -143,9 +157,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
     {
         try
         {
-            var query = "SELECT ol.OrderLineId, ol.OrderId, ol.Quantity, ol.UnitPrice, p.ProductId, p.ProductName FROM [dbo].[OrderLine] ol INNER JOIN [dbo].[Product] p ON ol.ProductId = p.ProductId INNER JOIN [dbo].[Order] o ON ol.OrderId = o.OrderId WHERE ol.OrderId = @OrderId;";
             using var connection = CreateConnection();
-            return (await connection.QueryAsync<OrderLine>(query, new { OrderId = orderId })).ToList();
+            return (await connection.QueryAsync<OrderLine>(GetOrderLines, new { OrderId = orderId })).ToList();
         }
         catch (Exception ex)
         {
@@ -157,9 +170,8 @@ public class OrderDAO : BaseDAO, IOrderDAO
     {
         try
         {
-            var query = "UPDATE [dbo].[Order] SET Status = @Status WHERE OrderId = @OrderId";
             using var connection = CreateConnection();
-            var result = await connection.ExecuteAsync(query, new { Status = status, OrderId = orderId });
+            var result = await connection.ExecuteAsync(UpdateOrderStatus, new { Status = status, OrderId = orderId });
             return result > 0;
 
         }
