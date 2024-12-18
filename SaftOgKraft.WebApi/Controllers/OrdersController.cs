@@ -78,7 +78,6 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            //bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, statusUpdate.Status);
 
             bool isUpdated = await _orderDAO.UpdateOrderStatusAsync(orderId, "Packed");
 

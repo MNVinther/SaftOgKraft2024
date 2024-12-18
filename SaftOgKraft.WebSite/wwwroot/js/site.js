@@ -11,7 +11,7 @@ async function sortProducts() {
     : `Product`; // Fetch unsorted products (default)
 
   const response = await fetch(url);
-  const products = await response.json(); // Ensure this line is unique.
+  const products = await response.json(); 
 
   if (!response.ok) {
     console.error('Error fetching products:', response.statusText);
@@ -44,7 +44,7 @@ async function sortProducts() {
 }
 
 
-// Optionally load default products on page load.
+
 document.addEventListener("DOMContentLoaded", async () => {
   await sortProducts();
   

@@ -23,7 +23,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
     private static readonly string UpdateProductStockSql = @"
         UPDATE Product
         SET Stock = Stock - @Quantity
-        WHERE ProductId = @ProductId AND Stock >= @Quantity";// AND Version = @Version;";
+        WHERE ProductId = @ProductId AND Stock >= @Quantity";
 
     private static readonly string GetProductStockAndVersionSql = @"
         SELECT Stock, Version FROM Product WHERE ProductId = @ProductId;";
@@ -81,7 +81,7 @@ public class OrderDAO : BaseDAO, IOrderDAO
         }
         Thread.Sleep( 5000 );
         // Step 2: Transaction for Order Creation
-        using var transaction = connection.BeginTransaction(IsolationLevel.ReadUncommitted); //TODO: Spørg Lars
+        using var transaction = connection.BeginTransaction(IsolationLevel.ReadUncommitted); 
         try
         {
             // Insert Order

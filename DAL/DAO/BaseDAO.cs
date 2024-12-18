@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-//using System.Data.SqlClient; Udkommenteret da denne var blevet Obsolete, og anbefaling er at man bruger Microsoft.Data.SqlClient.
 using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;

@@ -47,10 +47,9 @@ public class PaymentController : Controller
             CustomerId = 1,
             OrderDate = DateTime.Now,
             TotalAmount = totalAmount,
-            //Status = "Pending", Set default pending in Database
             OrderLines = cart.ProductQuantities.Select(pq => new OrderLineDto
             {
-                ProductId = pq.Key, // Use the productId from the dictionary key
+                ProductId = pq.Key, 
                 Quantity = pq.Value.Quantity,
                 UnitPrice = pq.Value.GetTotalPrice() / pq.Value.Quantity 
             }).ToList()

@@ -9,7 +9,7 @@ using SaftOgKraft.OrderManager.ApiClient.DTOs;
 namespace SaftOgKraft.OrderManager.ApiClient;
 public class OrderRestClient : IOrderRestClient
 {
-    //restsharp klienten
+    
     private readonly RestClient _restClient;  
 
     //constructor der modtager basis URL'en til APi'et

@@ -11,7 +11,7 @@ namespace DAL.DAO;
 
 public class ProductDAO : BaseDAO, IProductDAO
 {
-    // #TODO Not sure about this one - lokal variabel i den metode hvor den skal bruges.
+   
     
     public ProductDAO(string connectionString) : base(connectionString)
     {
@@ -40,7 +40,6 @@ public class ProductDAO : BaseDAO, IProductDAO
     {
         try
         {
-            //var query = "SELECT * FROM Product WHERE ProductId = @Id";
             var query = "SELECT ProductId as Id, ProductName as Name, Description, Price FROM Product WHERE ProductId = @Id";
             using var connection = CreateConnection();
             var product = await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });

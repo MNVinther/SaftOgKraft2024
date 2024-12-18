@@ -49,13 +49,10 @@ public class ProductsController : ControllerBase
         return Ok(products.ToDtos());
     }
 
-    // GET api/<ProductsController>/5
-    //[HttpGet("{id}")]
-    //public async Task<ActionResult<Product>> GetProductByIdAsync(int id) => Ok(await _productsDAO.GetProductByIdAsync(id));
-
+    
     // GET api/<ProductsController>/5
     [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get(int id)
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             try
             {
