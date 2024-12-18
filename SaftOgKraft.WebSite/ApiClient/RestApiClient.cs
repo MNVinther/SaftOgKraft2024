@@ -5,7 +5,7 @@ namespace SaftOgKraft.WebSite.ApiClient;
 
 public class RestApiClient : IRestClient
 {
-    //restsharp klienten
+    
     private readonly RestClient _restClient;
 
 
@@ -27,7 +27,6 @@ public class RestApiClient : IRestClient
     {
         var request = new RestRequest("products", Method.Post)
                       .AddJsonBody(product);
-        //var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
         var response = await _restClient.ExecuteAsync<int>(request);
         return !response.IsSuccessful
             ? throw new Exception($"Error creating product. Status: {response.StatusCode}, Message: {response.Content}")
@@ -57,7 +56,7 @@ public class RestApiClient : IRestClient
     public async Task<IEnumerable<ProductDto>?> GetSortedProductsAsync(string sortOrder = "")
     {
             var request = new RestRequest($"products/sorted?sortOrder={sortOrder}", Method.Get);
-            //request.Method = Method.Get;
+            
 
             var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
         return !response.IsSuccessful
@@ -87,9 +86,6 @@ public class RestApiClient : IRestClient
     {
         // Create a request for the "products" endpoint with a GET method
         var request = new RestRequest($"products/tenlatest", Method.Get);
-
-        // Add a query parameter "filter" with the value "GetTenLatest"
-        //request.AddParameter("filter", "latest10");
 
         // Execute the request asynchronously and deserialize the response to a list of ProductDto objects
         var response = await _restClient.ExecuteAsync<IEnumerable<ProductDto>>(request);
@@ -121,7 +117,6 @@ public class RestApiClient : IRestClient
             : response.Data ?? throw new NullReferenceException("Null reference in method GetProductByIdAsync in website project (RestApiClient.cs)");
     }
 
-    // public Task<bool> UpdateProductAsync(ProductDto entity)
     public async Task<bool> UpdateProductAsync(ProductDto product)
     {
         var request = new RestRequest($"products/{product.Id}", Method.Put)
