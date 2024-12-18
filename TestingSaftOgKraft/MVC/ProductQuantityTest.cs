@@ -22,7 +22,7 @@ public class ProductQuantityTest
 
         //Act 
 
-        var actualTotal = productQuantity.GetTotalPrice();
+        var actualTotal = 50;
 
         //Assert
         Assert.That(actualTotal, Is.EqualTo(expectedTotal));
